@@ -1,37 +1,59 @@
 ﻿@model Weatherapplication.Models.StudentDetails
-
-<h2>Add Student</h2>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<h2>
+    @(Model.Id == 0 ? "Add Student" : "Update Student")
+</h2>
 
 <form asp-action="Create" method="post">
 
-    <div>
+    <input type="hidden" asp-for="Id" />
+
+    <div class="mb-3">
+
         <label>Student Name</label>
-        <input asp-for="StudentName" class="form-control" />
+
+        <input asp-for="StudentName"
+               class="form-control" />
+
     </div>
 
-    <br />
+    <div class="mb-3">
 
-    <div>
         <label>Email</label>
-        <input asp-for="Email" class="form-control" />
+
+        <input asp-for="Email"
+               class="form-control" />
+
     </div>
 
-    <br />
+    <div class="mb-3">
 
-    <div>
         <label>Mobile</label>
-        <input asp-for="Mobile" class="form-control" />
+
+        <input asp-for="Mobile"
+               class="form-control" />
+
     </div>
 
-    <br />
+    <div class="mb-3">
 
-    <div>
         <label>Course</label>
-        <input asp-for="Course" class="form-control" />
+
+        <input asp-for="Course"
+               class="form-control" />
+
     </div>
 
-    <br />
+    <button type="submit"
+            class="btn btn-primary">
 
-    <button type="submit" class="btn btn-primary">Save</button>
+        @(Model.Id == 0 ? "Save" : "Update")
+
+    </button>
+
+    <a asp-action="Index"
+       class="btn btn-secondary">
+        Back
+    </a>
 
 </form>

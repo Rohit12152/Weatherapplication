@@ -1,31 +1,195 @@
 ﻿@model IEnumerable<Weatherapplication.Models.StudentDetails>
 
-<h2>Student List</h2>
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 
-<a asp-action="Create" class="btn btn-success">Add Student</a>
+<link rel="stylesheet"
+      href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
 
-<br />
-<br />
+<link rel="stylesheet"
+      href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css" />
 
-<table class="table table-bordered">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <tr>
-        <th>Id</th>
-        <th>Name</th>
-        <th>Email</th>
-        <th>Mobile</th>
-        <th>Course</th>
-    </tr>
+<h2 class="mb-3">Student List</h2>
 
-    @foreach (var item in Model)
-    {
+<a asp-action="Create"
+   class="btn btn-success mb-3">
+
+    <i class="fa fa-plus"></i> Add Student
+
+</a>
+
+<table id="studentTable"
+       class="table table-bordered table-striped">
+
+    <thead class="table-dark">
+
         <tr>
-            <td>@item.Id</td>
-            <td>@item.StudentName</td>
-            <td>@item.Email</td>
-            <td>@item.Mobile</td>
-            <td>@item.Course</td>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Mobile</th>
+            <th>Course</th>
+            <th width="150">Action</th>
         </tr>
-    }
+
+    </thead>
+
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+
+                <td>@item.Id</td>
+
+                <td>@item.StudentName</td>
+
+                <td>@item.Email</td>
+
+                <td>@item.Mobile</td>
+
+                <td>@item.Course</td>
+
+                <td>
+
+                    <a asp-action="Create"
+                       asp-route-id="@item.Id"
+                       class="btn btn-warning btn-sm">
+
+                        <i class="fa fa-pen-to-square"></i>
+
+                    </a>
+
+                    <a href="javascript:void(0)"
+                       onclick="DeleteStudent(@item.Id)"
+                       class="btn btn-danger btn-sm">
+
+                        <i class="fa fa-trash"></i>
+
+                    </a>
+
+                </td>
+
+            </tr>
+        }
+
+    </tbody>
 
 </table>
+
+@if (TempData["success"] != null)
+{
+    <script>
+
+        Swal.fire({
+
+            icon: 'success',
+
+            title: 'Success',
+
+            text: '@TempData["success"]',
+
+            timer: 2000,
+
+            showConfirmButton: false
+
+        });
+
+    </script>
+}
+
+@section Scripts {
+
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
+
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
+
+    <script>
+
+        $(document).ready(function () {
+
+            $('#studentTable').DataTable({
+
+                processing: true,
+
+                responsive: true,
+
+                pageLength: 5,
+
+                dom: 'Bfrtip',
+
+                       buttons: [
+
+            {
+                extend: 'copy',
+                text: '<i class="fa fa-copy"></i> Copy',
+                className: 'btn btn-secondary btn-sm'
+            },
+
+            {
+                extend: 'excel',
+                text: '<i class="fa fa-file-excel"></i> Excel',
+                className: 'btn btn-success btn-sm'
+            },
+
+            {
+                extend: 'pdf',
+                text: '<i class="fa fa-file-pdf"></i> PDF',
+                className: 'btn btn-danger btn-sm'
+            },
+
+            {
+                extend: 'print',
+                text: '<i class="fa fa-print"></i> Print',
+                className: 'btn btn-primary btn-sm'
+            }
+
+        ]
+
+            });
+
+        });
+
+        function DeleteStudent(id)
+        {
+            Swal.fire({
+
+                title: 'Are you sure?',
+
+                text: "You won't be able to recover this record!",
+
+                icon: 'warning',
+
+                showCancelButton: true,
+
+                confirmButtonColor: '#d33',
+
+                cancelButtonColor: '#3085d6',
+
+                confirmButtonText: 'Yes, delete it!'
+
+            }).then((result) => {
+
+                if (result.isConfirmed)
+                {
+                    window.location.href = '/Student/Delete/' + id;
+                }
+
+            });
+        }
+
+    </script>
+
+}

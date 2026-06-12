@@ -1,0 +1,377 @@
+﻿@model Weatherapplication.Models.SalesDetail
+@if(Model.Id == 0)
+{
+    ViewData["Title"] = "Create Sales Order";
+    <h2>Create Sales Order</h2>
+}else
+{
+    ViewData["Title"] = "Edit Sales Order";
+    <h2>Edit Sales Order</h2>
+}
+
+
+<form asp-action="Create" method="post">
+
+    <input type="hidden" asp-for="Id" />
+
+    <div class="row">
+
+        <div class="col-md-3">
+            <label>Sales Order No</label>
+            <input asp-for="SalesNo" class="form-control" readonly />
+        </div>
+        <div class="col-md-3">
+            <label>Reference</label>
+            <input asp-for="ReferenceQuotationNo"
+                   class="form-control" />
+        </div>
+        <div class="col-md-3">
+            <label>Date</label>
+            <input asp-for="SalesDate" type="date" class="form-control" />
+        </div>
+
+        <div class="col-md-6">
+            <label>Student</label>
+
+            <select asp-for="StudentId"
+                    asp-items="ViewBag.StudentList"
+                    class="form-control">
+
+                <option value="">Select Student</option>
+
+            </select>
+        </div>
+
+    </div>
+
+    <hr />
+
+    <table class="table table-bordered" id="tblItems">
+
+        <thead class="table-dark">
+
+            <tr>
+                <th>Item</th>
+                <th>Qty</th>
+                <th>Rate</th>
+                <th>Amount</th>
+                <th>GST %</th>
+                <th>Tax Amt</th>
+                <th>Total</th>
+                <th>Action</th>
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            @{
+                int index = 0;
+            }
+
+            @if (ViewBag.SalesItemDetail != null)
+            {
+                foreach (Weatherapplication.Models.SalesItemDetail item in ViewBag.SalesItemDetail)
+                {
+                    <tr>
+
+                        <td>
+
+                            <select name="salesitemdetails[@index].ItemId"
+                                    class="form-control itemDropdown">
+
+                                <option value="">Select Item</option>
+
+                                @foreach (var itm in ViewBag.ItemList)
+                                {
+                                    if (itm.Value == item.ItemId.ToString())
+                                    {
+                                        <option value="@itm.Value" selected>@itm.Text</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@itm.Value">@itm.Text</option>
+                                    }
+                                }
+
+                            </select>
+
+                        </td>
+
+                        <td>
+                            <input type="number"
+                                   name="salesitemdetails[@index].Qty"
+                                   class="form-control qty"
+                                   value="@item.Qty" />
+                        </td>
+
+                        <td>
+                            <input type="number"
+                                   name="salesitemdetails[@index].Rate"
+                                   class="form-control rate"
+                                   value="@item.Rate" />
+                        </td>
+
+                        <td>
+                            <input type="number"
+                                   name="salesitemdetails[@index].Amount"
+                                   class="form-control amount"
+                                   value="@item.Amount"
+                                   readonly />
+                        </td>
+
+                        <td>
+                            <input type="number"
+                                   name="salesitemdetails[@index].GST"
+                                   class="form-control gst"
+                                   value="@item.GST" />
+                        </td>
+
+                        <td>
+                            <input type="number"
+                                   name="salesitemdetails[@index].TaxAmount"
+                                   class="form-control taxamt"
+                                   value="@item.TaxAmount"
+                                   readonly />
+                        </td>
+
+                        <td>
+                            <input type="number"
+                                   name="salesitemdetails[@index].TotalAmount"
+                                   class="form-control total"
+                                   value="@item.TotalAmount"
+                                   readonly />
+                        </td>
+
+                        <td>
+                            <button type="button"
+                                    class="btn btn-danger btnRemove">
+                                X
+                            </button>
+                        </td>
+
+                    </tr>
+
+                    index++;
+                }
+            }
+
+        </tbody>
+
+    </table>
+
+    <button type="button"
+            id="btnAdd"
+            class="btn btn-success mb-3">
+
+        Add Item
+
+    </button>
+
+    <div class="row">
+
+        <div class="col-md-3">
+            <label>Gross Amount</label>
+            <input asp-for="TotalAmount"
+                   id="GrossAmount"
+                   class="form-control"
+                   readonly />
+        </div>
+
+        <div class="col-md-3">
+            <label>Total Tax</label>
+            <input asp-for="TotalTax"
+                   id="TotalTax"
+                   class="form-control"
+                   readonly />
+        </div>
+
+        <div class="col-md-3">
+            <label>Net Amount</label>
+            <input asp-for="NetAmount"
+                   id="NetAmount"
+                   class="form-control"
+                   readonly />
+        </div>
+
+    </div>
+
+    <br />
+
+    <button type="submit"
+            class="btn btn-success">
+
+        @(Model.Id == 0 ? "Save" : "Update")
+
+    </button>
+
+    <a asp-action="Index"
+       class="btn btn-secondary">
+        Back
+    </a>
+
+</form>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+<script>
+
+        var rowIndex = @(ViewBag.RowCount ?? 0);
+
+    $("#btnAdd").click(function () {
+
+        var row = `
+        <tr>
+
+            <td>
+
+                <select name="salesitemdetails[${rowIndex}].ItemId"
+                        class="form-control itemDropdown">
+
+                    <option value="">Select Item</option>
+
+                    @foreach (var item in ViewBag.ItemList)
+                    {
+                            <option value="@item.Value">@item.Text</option>
+                    }
+
+                </select>
+
+            </td>
+
+            <td>
+                <input type="number"
+                       name="salesitemdetails[${rowIndex}].Qty"
+                       class="form-control qty"
+                       value="1" />
+            </td>
+
+            <td>
+                <input type="number"
+                       name="salesitemdetails[${rowIndex}].Rate"
+                       class="form-control rate"
+                       value="0" />
+            </td>
+
+            <td>
+                <input type="number"
+                       name="salesitemdetails[${rowIndex}].Amount"
+                       class="form-control amount"
+                       readonly />
+            </td>
+
+            <td>
+                <input type="number"
+                       name="salesitemdetails[${rowIndex}].GST"
+                       class="form-control gst"
+                        />
+            </td>
+
+            <td>
+                <input type="number"
+                       name="salesitemdetails[${rowIndex}].TaxAmount"
+                       class="form-control taxamt"
+                       readonly />
+            </td>
+
+            <td>
+                <input type="number"
+                       name="salesitemdetails[${rowIndex}].TotalAmount"
+                       class="form-control total"
+                       readonly />
+            </td>
+
+            <td>
+                <button type="button"
+                        class="btn btn-danger btnRemove">
+                    X
+                </button>
+            </td>
+
+        </tr>`;
+
+        $("#tblItems tbody").append(row);
+
+        rowIndex++;
+    });
+        $(document).on("keyup change", ".qty,.rate,.gst", function () {
+
+        var row = $(this).closest("tr");
+        CalculateRow(row);
+
+    });
+       function CalculateRow(row) {
+
+        var qty = parseFloat(row.find('.qty').val()) || 0;
+        var rate = parseFloat(row.find('.rate').val()) || 0;
+        var gst = parseFloat(row.find('.gst').val()) || 0;
+
+        var amount = qty * rate;
+        var tax = amount * gst / 100;
+        var total = amount + tax;
+
+        row.find('.amount').val(amount.toFixed(2));
+        row.find('.taxamt').val(tax.toFixed(2));
+        row.find('.total').val(total.toFixed(2));
+
+        CalculateTotal();
+    }
+    $(document).on("click",
+        ".btnRemove",
+        function () {
+
+            $(this).closest("tr").remove();
+
+            CalculateTotal();
+        });
+
+    function CalculateTotal() {
+
+        var gross = 0;
+        var tax = 0;
+
+        $(".amount").each(function () {
+
+            gross += parseFloat($(this).val()) || 0;
+
+        });
+
+        $(".taxamt").each(function () {
+
+            tax += parseFloat($(this).val()) || 0;
+
+        });
+
+        $("#GrossAmount").val(gross.toFixed(2));
+        $("#TotalTax").val(tax.toFixed(2));
+        $("#NetAmount").val((gross + tax).toFixed(2));
+    }
+
+    $(document).ready(function () {
+
+        CalculateTotal();
+
+    });
+     $(document).on('change', '.itemDropdown', function () {
+
+        var row = $(this).closest('tr');
+        var itemId = $(this).val();
+
+        $.ajax({
+            url: '/Sales/GetItemRate', // apne controller ka naam
+            type: 'GET',
+            data: { itemId: itemId },
+            success: function (data) {
+
+                row.find('.rate').val(data.rate);
+               // alert(row.find('.rate').val());
+                row.find('.gst').val(data.gst);
+
+                // Amount auto calculate karne ke liye
+                row.find('.rate').trigger('change');
+                CalculateRow(row);
+            }
+        });
+    });
+      
+</script>

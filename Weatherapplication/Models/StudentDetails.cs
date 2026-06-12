@@ -14,5 +14,6 @@ namespace Weatherapplication.Models
         public string Mobile { get; set; }
 
         public string Course { get; set; }
+        public int UserId { get; set; }
     }
 }

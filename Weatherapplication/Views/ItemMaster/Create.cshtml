@@ -1,0 +1,88 @@
+﻿@model Weatherapplication.Models.ItemMaster
+
+<h2>
+    @(Model.Id == 0 ? "Add Item" : "Update Item")
+</h2>
+
+<form asp-action="Create" method="post">
+
+    <input type="hidden" asp-for="Id" />
+
+    <div class="row">
+
+        <div class="col-md-3 mb-3">
+            <label>Item Code</label>
+            <input asp-for="ItemCode" class="form-control" />
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <label>Item Name</label>
+            <input asp-for="ItemName" class="form-control" />
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <label>Category</label>
+            <input asp-for="Category" class="form-control" />
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <label>Unit</label>
+            <input asp-for="Unit" class="form-control" />
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <label>Purchase Rate</label>
+            <input asp-for="PurchaseRate" class="form-control" />
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <label>Sale Rate</label>
+            <input asp-for="SaleRate" class="form-control" />
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <label>GST %</label>
+            <input asp-for="GST" class="form-control" />
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <label>Opening Stock</label>
+            <input asp-for="OpeningStock" class="form-control" />
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <label>Minimum Stock</label>
+            <input asp-for="MinStock" class="form-control" />
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <label>Brand</label>
+            <input asp-for="Brand" class="form-control" />
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <label>HSN Code</label>
+            <input asp-for="HSNCode" class="form-control" />
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <label>Description</label>
+            <textarea asp-for="ItemDescription"
+                      class="form-control"></textarea>
+        </div>
+
+    </div>
+
+    <button type="submit"
+            class="btn btn-success">
+
+        @(Model.Id == 0 ? "Save" : "Update")
+
+    </button>
+
+    <a asp-action="Index"
+       class="btn btn-secondary">
+        Back
+    </a>
+
+</form>

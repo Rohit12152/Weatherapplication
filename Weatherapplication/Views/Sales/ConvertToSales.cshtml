@@ -1,0 +1,139 @@
+﻿@model Weatherapplication.Models.SalesDetail
+
+<form asp-action="SaveSales" method="post">
+
+    <input asp-for="QuotationId" type="hidden" />
+    <input asp-for="UserId" type="hidden" />
+
+    <div class="row">
+
+        <div class="col-md-3">
+            <label>Sales No</label>
+            <input asp-for="SalesNo"
+                   class="form-control"
+                   readonly />
+        </div>
+
+        <div class="col-md-3">
+            <label>Reference Quotation</label>
+            <input asp-for="ReferenceQuotationNo"
+                   class="form-control"
+                   readonly />
+        </div>
+
+        <div class="col-md-3">
+            <label>Sales Date</label>
+            <input asp-for="SalesDate"
+                   type="date"
+                   class="form-control" />
+        </div>
+
+        <div class="col-md-3">
+            <label>Student</label>
+            <select asp-for="StudentId"
+                    asp-items="ViewBag.StudentList"
+                    class="form-control">
+            </select>
+        </div>
+
+    </div>
+
+    <br />
+
+    <table class="table table-bordered">
+
+        <thead>
+            <tr>
+                <th>Item Id</th>
+                <th>Qty</th>
+                <th>Rate</th>
+                <th>Amount</th>
+                <th>GST</th>
+                <th>Tax</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            @for (int i = 0; i < Model.SalesItems.Count; i++)
+            {
+                <tr>
+
+                    <td>
+                        <select asp-for="SalesItems[i].ItemId"
+                                asp-items="ViewBag.ItemList"
+                                class="form-control">
+                            <option value="">Select Item</option>
+                        </select>
+                    </td>
+
+                    <td>
+                        <input asp-for="SalesItems[i].Qty"
+                               class="form-control" />
+                    </td>
+
+                    <td>
+                        <input asp-for="SalesItems[i].Rate"
+                               class="form-control" />
+                    </td>
+
+                    <td>
+                        <input asp-for="SalesItems[i].Amount"
+                               class="form-control" readonly />
+                    </td>
+
+                    <td>
+                        <input asp-for="SalesItems[i].GST"
+                               class="form-control" readonly />
+                    </td>
+
+                    <td>
+                        <input asp-for="SalesItems[i].TaxAmount"
+                               class="form-control" readonly />
+                    </td>
+
+                    <td>
+                        <input asp-for="SalesItems[i].TotalAmount"
+                               class="form-control" readonly />
+                    </td>
+
+                </tr>
+            }
+
+        </tbody>
+
+    </table>
+
+    <div class="row">
+
+        <div class="col-md-3">
+            <label>Total Amount</label>
+            <input asp-for="TotalAmount"
+                   class="form-control"
+                   readonly />
+        </div>
+
+        <div class="col-md-3">
+            <label>Total Tax</label>
+            <input asp-for="TotalTax"
+                   class="form-control"
+                   readonly />
+        </div>
+
+        <div class="col-md-3">
+            <label>Net Amount</label>
+            <input asp-for="NetAmount"
+                   class="form-control"
+                   readonly />
+        </div>
+
+    </div>
+
+    <br />
+
+    <button type="submit" class="btn btn-success">
+        Save Sales
+    </button>
+
+</form>

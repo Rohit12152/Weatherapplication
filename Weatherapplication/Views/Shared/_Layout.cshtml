@@ -1,52 +1,261 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Weatherapplication</title>
+
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.bootstrap5.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css" />
+
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Weatherapplication.styles.css" asp-append-version="true" />
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <style>
+        /* Global */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f4f6f9;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            color: #333;
+        }
+
+        main {
+            flex: 1;
+        }
+
+        /* Navbar */
+        .navbar {
+            background-color: #ffffff !important;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05) !important;
+            border-bottom: 1px solid #e2e8f0 !important;
+            padding: 0.75rem 0;
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            color: #0d6efd !important;
+            font-size: 1.35rem;
+        }
+
+        .nav-link {
+            font-weight: 500;
+            color: #555555 !important;
+            padding: 0.5rem 1rem !important;
+            border-radius: 6px;
+            transition: all 0.2s ease-in-out;
+            font-size: 0.95rem;
+        }
+
+            /* एक्टिव टैब का स्टाइल */
+            .nav-link:hover,
+            .nav-link.active {
+                color: #0d6efd !important;
+                background-color: #f0f4f8;
+                font-weight: 600;
+            }
+
+            .nav-link i {
+                margin-right: 6px;
+                font-size: 1rem;
+            }
+
+        /* Footer */
+        footer {
+            background-color: #ffffff;
+            border-top: 1px solid #e2e8f0 !important;
+            padding: 1.2rem 0;
+            margin-top: 3rem;
+            font-size: 0.9rem;
+        }
+
+        .user-avatar {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: #0d6efd;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 16px;
+        }
+    </style>
 </head>
+
 <body>
+
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Weatherapplication</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+        <nav class="navbar navbar-expand-lg navbar-light mb-4">
+            <div class="container-fluid px-4">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                    <i class="fa-solid fa-cloud-sun-rain me-2"></i> WeatherApp
+                </a>
+
+                <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+
+                <div class="navbar-collapse collapse justify-content-start">
+                    <ul class="navbar-nav me-auto gap-1 ms-4" id="mainNavbar">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">
+                                <i class="fa-solid fa-house"></i> Home
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link" asp-area="" asp-controller="Student" asp-action="Index">
+                                <i class="fa-solid fa-graduation-cap"></i> Student Master
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Student" asp-action="Index">Student Master</a>
+                            <a class="nav-link" asp-area="" asp-controller="ItemMaster" asp-action="Index">
+                                <i class="fa-solid fa-boxes-stacked"></i> Item Master
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Quotation" asp-action="Index">
+                                <i class="fa-solid fa-file-invoice-dollar"></i> Quotation
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Sales" asp-action="Index">
+                                <i class="fa-solid fa-file-invoice-dollar"></i> Sales Order
+                            </a>
+                        </li>
+                        @if (User.Identity != null && User.Identity.IsAuthenticated)
+                        {
+                            string userName = User.Identity.Name ?? "User";
+                            string firstLetter = userName.Substring(0, 1).ToUpper();
+
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle d-flex align-items-center"
+                                   href="javascript:void(0);"
+                                   id="userDropdown"
+                                   data-bs-toggle="dropdown"
+                                   aria-expanded="false">
+
+                                    <span class="rounded-circle bg-primary text-white d-flex justify-content-center align-items-center me-2"
+                                          style="width:35px;height:35px;font-weight:bold;">
+                                        @firstLetter
+                                    </span>
+
+                                    <span>@userName</span>
+                                </a>
+
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                                    <li>
+                                        <a class="dropdown-item" asp-controller="Login" asp-action="Logout">
+                                            <i class="fa-solid fa-right-from-bracket me-2"></i>
+                                            Logout
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Login" asp-action="LoginView">
+                                    <i class="fa-regular fa-user-circle"></i> Login
+                                </a>
+                            </li>
+                        }
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">
+                                <i class="fa-solid fa-shield-halved"></i> Privacy
+                            </a>
                         </li>
                     </ul>
                 </div>
             </div>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
+
+    <div class="container-fluid px-4">
+        <main role="main" class="pb-4">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2026 - Weatherapplication - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+   @*  <footer class="footer text-muted">
+        <div class="container-fluid px-4 text-center text-md-start d-md-flex justify-content-between align-items-center">
+            <div class="mb-2 mb-md-0">
+                &copy; 2026 - <span class="fw-semibold text-dark">Weatherapplication</span> All rights reserved.
+            </div>
+            <div>
+                <a class="text-decoration-none text-muted me-3" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy Policy</a>
+                <a href="#" class="text-decoration-none text-muted">Terms of Service</a>
+            </div>
         </div>
-    </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    </footer> *@
+
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  @*   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script> *@
+    <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.colVis.min.js"></script>
+
     <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <script>
+        $(document).ready(function () {
+            // वर्तमान पेज का URL पाथ पता करें और उसे Lowercase में बदलें
+            var currentPath = window.location.pathname.toLowerCase();
+
+            // अगर यूजर रूट पाथ (/) पर है, तो डिफ़ॉल्ट रूप से उसे लॉगिन पेज का पाथ मान लें
+            if (currentPath === '/' || currentPath === '/login' || currentPath === '/login/') {
+                currentPath = '/login/loginview';
+            }
+
+            var isAnyActive = false;
+
+            // सभी नेविगेशन लिंक्स को चेक करें
+            $('#mainNavbar .nav-link').each(function () {
+                var href = $(this).attr('href');
+                if (href) {
+                    href = href.toLowerCase();
+
+                    // जांचें कि क्या वर्तमान URL इस लिंक के href से मैच करता है
+                    if (currentPath === href || (currentPath.indexOf(href) !== -1 && href !== '/')) {
+                        $(this).addClass('active');
+                        isAnyActive = true;
+                    }
+                }
+            });
+
+            // बैकअप लॉजिक: अगर कोई भी टैब एक्टिव नहीं हुआ, तो सीधे लॉगिन वाले टैब को एक्टिव कर दें
+            if (!isAnyActive) {
+                $('#mainNavbar .nav-link[href*="Login"]').addClass('active');
+            }
+        });
+    </script>
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

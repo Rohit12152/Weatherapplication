@@ -1,0 +1,117 @@
+﻿@model IEnumerable<Weatherapplication.Models.QuotationDetail>
+
+<h2>Quotation List</h2>
+<a asp-action="Create" class="btn btn-success mb-3">
+    Add New Quotation
+</a>
+
+<table id="itemTable" class="table table-bordered table-striped nowrap w-100">
+    <thead>
+        <tr>
+            <th>Quotation No</th>
+            <th>Date</th>
+            <th>Student Id</th>
+            <th>Amount</th>
+            <th>Tax</th>
+            <th>Net Amount</th>
+            <th width="150">Action</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.QuotationNo</td>
+                <td>@item.QuotationDate.ToString("dd/MM/yyyy")</td>
+                <td>@item.Student.StudentName</td>
+                <td>@item.TotalAmount</td>
+                <td>@item.TotalTax</td>
+                <td>@item.NetAmount</td>
+
+                <td>
+
+                    <a asp-action="Create"
+                       asp-route-id="@item.Id"
+                       class="btn btn-warning btn-sm">
+                        <i class="fa fa-pen"></i>
+                    </a>
+
+                    <a href="javascript:void(0);"
+                       class="btn btn-danger btn-sm"
+                       onclick="DeleteQuotation(@item.Id)">
+                        <i class="fa fa-trash"></i>
+                    </a>
+                    <a asp-controller="Sales"
+                       asp-action="ConvertToSales"
+                       asp-route-quotationId="@item.Id"
+                       class="btn btn-success">
+                        Convert To Sales
+                    </a>
+                </td>
+
+            </tr>
+        }
+
+    </tbody>
+
+</table>
+<style>
+    .table.dataTable thead th {
+        background-color: black !important;
+        color: #fff !important;
+    }
+</style>
+
+<script>
+    $(document).ready(function () {
+
+        if ($.fn.DataTable) {
+
+            $('#itemTable').DataTable({
+                responsive: true,
+                scrollX: true
+            });
+
+        }
+
+    });
+
+    function DeleteQuotation(id) {
+
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to recover this item!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, Delete it!'
+        }).then((result) => {
+
+            if (result.isConfirmed) {
+                window.location.href = '/Quotation/Delete/' + id;
+            }
+
+        });
+    }
+</script>
+@if (TempData["success"] != null)
+{
+    <script>
+
+        Swal.fire({
+
+            icon: 'success',
+
+            title: 'Success',
+
+            text: '@TempData["success"]',
+
+            timer: 2000,
+
+            showConfirmButton: false
+
+        });
+
+    </script>
+}
