@@ -1,0 +1,295 @@
+﻿@model IEnumerable<Category>
+
+@{
+    ViewData["Title"] = "Category Master";
+}
+
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap5.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+
+<style>
+
+    .page-header {
+        background: #fff;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 2px 10px rgba(0,0,0,.08);
+        margin-bottom: 20px;
+    }
+
+    .master-card {
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 2px 15px rgba(0,0,0,.08);
+    }
+
+        .master-card .card-header {
+            background: #0d6efd;
+            color: #fff;
+            border-radius: 15px 15px 0 0 !important;
+            padding: 15px 20px;
+        }
+
+    .table th {
+        white-space: nowrap;
+        vertical-align: middle;
+    }
+
+    .table td {
+        vertical-align: middle;
+    }
+
+    .badge-active {
+        background: #198754;
+    }
+
+    .badge-inactive {
+        background: #dc3545;
+    }
+
+    .action-btn {
+        width: 35px;
+        height: 35px;
+        padding: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .dataTables_filter input {
+        border-radius: 8px !important;
+    }
+
+    .dataTables_length select {
+        border-radius: 8px !important;
+    }
+
+</style>
+
+<div class="container-fluid mt-4">
+
+    <!-- Header -->
+
+    <div class="page-header">
+
+        <div class="d-flex justify-content-between align-items-center">
+
+            <div>
+                <h3 class="mb-1">
+                    <i class="fa-solid fa-layer-group text-primary"></i>
+                    Category Master
+                </h3>
+
+                <small class="text-muted">
+                    Manage Product Categories
+                </small>
+            </div>
+
+            <a asp-action="Create"
+               class="btn btn-success">
+
+                <i class="fa fa-plus"></i>
+                Add Category
+
+            </a>
+
+        </div>
+
+    </div>
+
+    <!-- Grid -->
+
+    <div class="card master-card">
+
+       @*  <div class="card-header">
+
+            <h5 class="mb-0">
+                <i class="fa fa-list"></i>
+                Category List
+            </h5>
+
+        </div> *@
+
+        <div class="card-body">
+
+            <div class="table-responsive">
+
+                <table id="itemTable"
+                       class="table table-bordered table-hover align-middle w-100">
+
+                    <thead class="table-dark">
+
+                        <tr>
+                            <th width="80">ID</th>
+                            <th>Category Name</th>
+                            <th>Description</th>
+                            <th width="120">Status</th>
+                            <th width="140" class="text-center">
+                                Action
+                            </th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+
+                                <td>
+                                    @item.CategoryId
+                                </td>
+
+                                <td>
+                                    <strong>
+                                        @item.CategoryName
+                                    </strong>
+                                </td>
+
+                                <td>
+                                    @item.Description
+                                </td>
+
+                                <td>
+
+                                    @if (item.IsActive)
+                                    {
+                                        <span class="badge badge-active">
+                                            Active
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge badge-inactive">
+                                            Inactive
+                                        </span>
+                                    }
+
+                                </td>
+
+                                <td class="text-center">
+
+                                    <a asp-action="Create"
+                                       asp-route-id="@item.CategoryId"
+                                       class="btn btn-primary btn-sm action-btn">
+
+                                        <i class="fa fa-pen"></i>
+
+                                    </a>
+
+                                    <button type="button"
+                                            class="btn btn-danger btn-sm action-btn"
+                                            onclick="DeleteCategory(@item.CategoryId)">
+
+                                        <i class="fa fa-trash"></i>
+
+                                    </button>
+
+                                </td>
+
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.8/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+
+    $(document).ready(function () {
+
+        $('#itemTable').DataTable({
+
+            responsive: true,
+
+            autoWidth: false,
+
+            pageLength: 10,
+
+            order: [[0, "desc"]],
+
+            language: {
+
+                search: "Search :",
+
+                lengthMenu:
+                    "Show _MENU_ Entries",
+
+                info:
+                    "Showing _START_ to _END_ of _TOTAL_ Categories",
+
+                zeroRecords:
+                    "No Category Found"
+
+            }
+
+        });
+
+    });
+
+    function DeleteCategory(id) {
+
+        Swal.fire({
+
+            title: 'Are you sure?',
+
+            text: "You won't be able to recover this record!",
+
+            icon: 'warning',
+
+            showCancelButton: true,
+
+            confirmButtonColor: '#dc3545',
+
+            cancelButtonColor: '#6c757d',
+
+            confirmButtonText: 'Yes, Delete It'
+
+        }).then((result) => {
+
+            if (result.isConfirmed) {
+
+                window.location.href =
+                    '/Category/Delete/' + id;
+            }
+
+        });
+
+    }
+
+</script>
+
+@if (TempData["success"] != null)
+{
+    <script>
+
+        Swal.fire({
+
+            icon: 'success',
+
+            title: 'Success',
+
+            text: '@TempData["success"]',
+
+            timer: 2000,
+
+            showConfirmButton: false
+
+        });
+
+    </script>
+}

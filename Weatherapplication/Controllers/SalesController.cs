@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Weatherapplication.Models;
 
 namespace Weatherapplication.Controllers
 {
+    [Authorize]
     public class SalesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -39,6 +41,8 @@ namespace Weatherapplication.Controllers
 
         public IActionResult ConvertToSales(int quotationId)
         {
+            var userId = Convert.ToInt32(User.FindFirst("UserId")?.Value);
+          
             var quotation = _context.QuotationDetail
                                     .FirstOrDefault(x => x.Id == quotationId);
 
@@ -50,39 +54,63 @@ namespace Weatherapplication.Controllers
                                          .ToList();
 
             SalesDetail model = new SalesDetail();
+            try
+            {
+                model.SalesNo = GenerateSalesNo();
+                model.QuotationId = quotation.Id;
+                model.ReferenceQuotationNo = quotation.QuotationNo;
+                model.StudentId = quotation.StudentId;
+                model.SalesDate = DateTime.Now;
+                model.TotalAmount = quotation.TotalAmount;
+                model.TotalTax = quotation.TotalTax;
+                model.NetAmount = quotation.NetAmount;
+                model.UserId = quotation.UserId;
 
-            model.SalesNo = GenerateSalesNo();
-            model.QuotationId = quotation.Id;
-            model.ReferenceQuotationNo = quotation.QuotationNo;
-            model.StudentId = quotation.StudentId;
-            model.SalesDate = DateTime.Now;
-            model.TotalAmount = quotation.TotalAmount;
-            model.TotalTax = quotation.TotalTax;
-            model.NetAmount = quotation.NetAmount;
-            model.UserId = quotation.UserId;
 
-            model.SalesItems = quotationItems
-                .Select(x => new SalesItemDetail
-                {
-                    ItemId = x.ItemId,
-                    Qty = x.Qty,
-                    Rate = x.Rate,
-                    Amount = x.Amount,
-                    GST = x.GST,
-                  //  TaxPercent = x.TaxPercent,
-                    TaxAmount = x.TaxAmount,
-                    TotalAmount = x.TotalAmount
-                }).ToList();
+                //model.SalesItems = quotationItems.Select(x => new SalesItemDetail
+                //    {
+                //        ItemId = x.ItemId,
+                //        Qty = x.Qty,
+                //        Rate = x.Rate,
+                //        Amount = x.Amount,
+                //        GST = x.GST,
+                //        //  TaxPercent = x.TaxPercent,
+                //        TaxAmount = x.TaxAmount,
+                //        TotalAmount = x.TotalAmount
+                //    }).ToList();
+                model.SalesItems = (from q in quotationItems
+                                    join i in _context.ItemMaster
+                                        on q.ItemId equals i.Id
+                                    select new SalesItemDetail
+                                    {
+                                        ItemId = q.ItemId,
+                                        categoryid = i.categoryid,
+                                        Qty = q.Qty,
+                                        Rate = q.Rate,
+                                        Amount = q.Amount,
+                                        GST = q.GST,
+                                        // TaxPercent = q.TaxPercent,
+                                        TaxAmount = q.TaxAmount,
+                                        TotalAmount = q.TotalAmount
+                                    }).ToList();
+            }
+            catch (Exception ex)
+            {
+                return Content(ex.ToString());
+            }
 
-            ViewBag.StudentList = new SelectList(
-                _context.StudentDetails,
-                "Id",
-                "StudentName",
-                model.StudentId);
 
+            ViewBag.StudentList = new SelectList(_context.CustomerMaster.Where(x => x.UserId == userId && x.partytype == 1 && x.IsActive == true).ToList(), "Id", "CustomerName");
+
+
+            ViewBag.ItemList = new SelectList(_context.ItemMaster,"Id","ItemName");
+
+            ViewBag.CategoryList = new SelectList(_context.Categories.ToList(), "CategoryId", "CategoryName");
+
+           
             return View(model);
+            // return View(model);
         }
-
         [HttpPost]
         public IActionResult SaveSales(SalesDetail model)
         {
@@ -106,6 +134,14 @@ namespace Weatherapplication.Controllers
             {
                 item.SalesId = sales.Id;
                 _context.SalesItemDetail.Add(item);
+
+                // Stock Minus
+                var stockItem = _context.ItemMaster.FirstOrDefault(x => x.Id == item.ItemId);
+
+                if (stockItem != null)
+                {
+                    stockItem.CurrentStock -= Convert.ToDecimal(item.Qty);
+                }
             }
 
             _context.SaveChanges();
@@ -117,7 +153,7 @@ namespace Weatherapplication.Controllers
             int userId = Convert.ToInt32(User.FindFirst("UserId")?.Value);
 
             var data = (from s in _context.SalesDetail
-                        join st in _context.StudentDetails
+                        join st in _context.CustomerMaster
                         on s.StudentId equals st.Id into std
                         from st in std.DefaultIfEmpty()
                         where s.UserId == userId
@@ -129,7 +165,7 @@ namespace Weatherapplication.Controllers
                             ReferenceQuotationNo = s.ReferenceQuotationNo,
                             SalesDate = s.SalesDate,
                             NetAmount = s.NetAmount,
-                            StudentName = st == null ? "" : st.StudentName
+                            CustomerName = st == null ? "" : st.CustomerName
                         }).ToList();
 
             return View(data);
@@ -137,16 +173,35 @@ namespace Weatherapplication.Controllers
 
             //return Content("Record Count : " + data.Count);
         }
+        public IActionResult Delete(int id)
+        {
+            var details = _context.SalesItemDetail
+                .Where(x => x.SalesId == id)
+                .ToList();
+
+            _context.SalesItemDetail.RemoveRange(details);
+
+            var master = _context.SalesDetail
+                .FirstOrDefault(x => x.Id == id);
+
+            if (master != null)
+            {
+                _context.SalesDetail.Remove(master);
+            }
+
+            _context.SaveChanges();
+
+            TempData["success"] = "Sales Order Deleted Successfully";
+
+            return RedirectToAction("Index");
+        }
         public IActionResult Create(int? id)
         {
             var userId = Convert.ToInt32(User.FindFirst("UserId")?.Value);
 
-            ViewBag.StudentList = new SelectList(_context.StudentDetails.Where(x => x.UserId == userId).ToList(), "Id", "StudentName");
-
-            ViewBag.ItemList = new SelectList(
-                _context.ItemMaster.ToList(),
-                "Id",
-                "ItemName");
+            ViewBag.StudentList = new SelectList(_context.CustomerMaster.Where(x => x.UserId == userId && x.partytype == 1 && x.IsActive == true).ToList(), "Id", "CustomerName");
+            ViewBag.CategoryList = new SelectList(_context.Categories.Where(x => x.UserId == userId).ToList(), "CategoryId", "CategoryName");
+            ViewBag.ItemList = new SelectList(_context.ItemMaster.ToList(),"Id","ItemName");
 
             if (id == null)
             {
@@ -164,9 +219,27 @@ namespace Weatherapplication.Controllers
             var sales = _context.SalesDetail
                  .FirstOrDefault(x => x.Id == id);
 
-            var items = _context.SalesItemDetail
-                .Where(x => x.SalesId == id)
-                .ToList();
+            //var items = _context.SalesItemDetail
+            //    .Where(x => x.SalesId == id)
+            //    .ToList();
+
+            var items = (from q in _context.SalesItemDetail
+                         join i in _context.ItemMaster
+                         on q.ItemId equals i.Id
+                         where q.SalesId == id
+                         select new SalesItemDetail
+                         {
+                             Id = q.Id,
+                             SalesId = q.SalesId,
+                             ItemId = q.ItemId,
+                             Qty = q.Qty,
+                             Rate = q.Rate,
+                             Amount = q.Amount,
+                             GST = q.GST,
+                             TaxAmount = q.TaxAmount,
+                             TotalAmount = q.TotalAmount,
+                             categoryid = i.categoryid
+                         }).ToList();
 
             ViewBag.SalesItems = items;
             ViewBag.RowCount = items.Count;
@@ -185,8 +258,8 @@ namespace Weatherapplication.Controllers
 
             var userId = Convert.ToInt32(User.FindFirst("UserId")?.Value);
 
-            decimal gross = salesitemdetails.Sum(x => x.Amount ?? 0);
-            decimal tax = salesitemdetails.Sum(x => x.TaxAmount ?? 0);
+            double gross = salesitemdetails.Sum(x => x.Amount ?? 0);
+            double tax = salesitemdetails.Sum(x => x.TaxAmount ?? 0);
 
             salesorder.TotalAmount = gross;
             salesorder.TotalTax = tax;
@@ -205,6 +278,12 @@ namespace Weatherapplication.Controllers
                 foreach (var item in salesitemdetails)
                 {
                     item.SalesId = salesorder.Id;
+                    var stockItem = _context.ItemMaster.FirstOrDefault(x => x.Id == item.ItemId);
+
+                    if (stockItem != null)
+                    {
+                        stockItem.CurrentStock -= Convert.ToDecimal(item.Qty);
+                    }
                 }
 
                 _context.SalesItemDetail.AddRange(salesitemdetails);
@@ -230,6 +309,12 @@ namespace Weatherapplication.Controllers
                 foreach (var item in salesitemdetails)
                 {
                     item.SalesId = salesorder.Id;
+                    //var stockItem = _context.ItemMaster.FirstOrDefault(x => x.Id == item.ItemId);
+
+                    //if (stockItem != null)
+                    //{
+                    //    stockItem.CurrentStock -= Convert.ToDecimal(item.Qty);
+                    //}
                 }
 
                 _context.SalesItemDetail.AddRange(salesitemdetails);
@@ -259,6 +344,20 @@ namespace Weatherapplication.Controllers
                       .FirstOrDefault();
 
             return Json(item);
+        }
+        [HttpGet]
+        public JsonResult GetItemsByCategory(int categoryId)
+        {
+            var items = _context.ItemMaster
+                .Where(x => x.categoryid == categoryId)
+                .Select(x => new
+                {
+                    id = x.Id,
+                    itemName = x.ItemName
+                })
+                .ToList();
+
+            return Json(items);
         }
     }
 }

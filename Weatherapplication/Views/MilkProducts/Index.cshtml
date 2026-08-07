@@ -1,0 +1,537 @@
+﻿@{
+    ViewData["Title"] = "Home - Shuddh Dairy Products";
+}
+
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home - DudhDahi</title>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+    <style>
+        :root {
+            --primary-color: #0284c7;
+            --primary-hover: #0369a1;
+            --accent-color: #f59e0b;
+            --text-color: #1e293b;
+            --bg-color: #f8fafc;
+            --white: #ffffff;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 0;
+            color: var(--text-color);
+        }
+
+        /* Header Navigation */
+        header {
+            background-color: var(--white);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 1.5rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--primary-color);
+        }
+
+            .logo span {
+                color: var(--accent-color);
+            }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+            margin: 0;
+            padding: 0;
+            align-items: center;
+        }
+
+        .nav-link-item {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+            .nav-link-item:hover,
+            .nav-link-item.active {
+                color: var(--primary-color);
+            }
+
+        /* Hero Image Slider Carousel */
+        .slider-container {
+            max-width: 1200px;
+            margin: 20px auto;
+            position: relative;
+            overflow: hidden;
+            border-radius: 18px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .slider {
+            display: flex;
+            transition: transform 0.6s ease-in-out;
+            width: 100%;
+        }
+
+        .slide {
+            min-width: 100%;
+            height: 380px;
+            position: relative;
+        }
+
+            .slide img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                filter: brightness(0.65);
+            }
+
+        .slide-content {
+            position: absolute;
+            top: 50%;
+            left: 8%;
+            transform: translateY(-50%);
+            color: white;
+            max-width: 500px;
+        }
+
+            .slide-content h1 {
+                font-size: 2.3rem;
+                margin-bottom: 10px;
+                text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            }
+
+            .slide-content p {
+                font-size: 1.1rem;
+                margin-bottom: 20px;
+                line-height: 1.4;
+            }
+
+        .slide-btn {
+            background-color: var(--accent-color);
+            color: white;
+            padding: 10px 22px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+            transition: 0.3s;
+        }
+
+            .slide-btn:hover {
+                background-color: #d97706;
+                transform: scale(1.05);
+            }
+
+        /* Slider Controls */
+        .prev-btn, .next-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.4);
+            color: white;
+            border: none;
+            font-size: 1.5rem;
+            padding: 12px 16px;
+            cursor: pointer;
+            border-radius: 50%;
+            transition: 0.3s;
+        }
+
+            .prev-btn:hover, .next-btn:hover {
+                background: rgba(0, 0, 0, 0.8);
+            }
+
+        .prev-btn {
+            left: 15px;
+        }
+
+        .next-btn {
+            right: 15px;
+        }
+
+        /* Container & Grid */
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            text-align: center;
+            color: var(--primary-color);
+            font-size: 2.2rem;
+            margin-bottom: 30px;
+            font-weight: 700;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 25px;
+        }
+
+        .product-card {
+            background: var(--white);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            text-align: center;
+            padding-bottom: 20px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+            .product-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            }
+
+            .product-card img {
+                width: 100%;
+                height: 200px;
+                object-fit: cover;
+            }
+
+            .product-card h3 {
+                margin: 15px 0 5px;
+                font-size: 1.2rem;
+                color: var(--text-color);
+            }
+
+            .product-card .price {
+                font-size: 1.25rem;
+                font-weight: bold;
+                color: var(--primary-color);
+                margin-bottom: 15px;
+            }
+
+        .btn-add-cart {
+            background-color: var(--primary-color);
+            color: var(--white);
+            border: none;
+            padding: 10px 22px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            margin: 0 auto;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+            .btn-add-cart:hover {
+                background-color: var(--primary-hover);
+                transform: scale(1.05);
+            }
+
+        /* Footer */
+        footer {
+            background-color: #0f172a;
+            color: var(--white);
+            text-align: center;
+            padding: 1.5rem;
+            margin-top: 50px;
+        }
+
+        /* Notification Toast */
+        #toast {
+            visibility: hidden;
+            min-width: 250px;
+            background-color: #16a34a;
+            color: #fff;
+            text-align: center;
+            border-radius: 25px;
+            padding: 12px 20px;
+            position: fixed;
+            z-index: 2000;
+            right: 30px;
+            bottom: 30px;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            opacity: 0;
+            transition: opacity 0.3s, bottom 0.3s;
+        }
+
+            #toast.show {
+                visibility: visible;
+                opacity: 1;
+                bottom: 40px;
+            }
+
+        /* Responsive Layout */
+        @@media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .nav-menu {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .slide {
+                height: 280px;
+            }
+
+            .slide-content h1 {
+                font-size: 1.5rem;
+            }
+
+            .slide-content p {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header>
+        <nav>
+            <div class="logo">Dudh<span>Dahi</span></div>
+            <ul class="nav-menu">
+                <li>
+                    <a class="nav-link-item active" asp-controller="MilkProducts" asp-action="Index">
+                        <i class="fa-solid fa-house"></i> Home
+                    </a>
+                </li>
+                <li>
+                    <a class="nav-link-item" asp-controller="MilkProducts" asp-action="products">
+                        <i class="fa-solid fa-box-open"></i> Products
+                    </a>
+                </li>
+                <li>
+                    <a class="nav-link-item" asp-controller="MilkProducts" asp-action="about">
+                        <i class="fa-solid fa-info-circle"></i> About Us
+                    </a>
+                </li>
+                <li>
+                    <a class="nav-link-item" asp-controller="MilkProducts" asp-action="contact">
+                        <i class="fa-solid fa-envelope"></i> Contact
+                    </a>
+                </li>
+                <!-- Shopping Cart Icon -->
+                <li>
+                    <a class="nav-link-item" asp-controller="MilkProducts" asp-action="Cart" style="position: relative;">
+                        <i class="fa-solid fa-cart-shopping"></i> Cart
+                        <span id="cart-count" style="background: #ef4444; color: white; border-radius: 50%; padding: 2px 7px; font-size: 0.8rem; vertical-align: top;">0</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Sliding Image Banner Carousel -->
+    <div class="slider-container">
+        <div class="slider" id="slider">
+            <!-- Slide 1 -->
+            <div class="slide">
+                <img src="https://images.unsplash.com/photo-1527153857715-3908f2bae5e8?auto=format&fit=crop&w=1200&q=80" alt="Fresh Milk Dairy">
+                <div class="slide-content">
+                    <h1>100% Shuddh & Taaza Dairy Products</h1>
+                    <p>Subah-Subah aapke ghar tak pahunche shuddh dudh, dahi, ghee aur makkhan direct farm se.</p>
+                    <a href="/MilkProducts/products" class="slide-btn"><i class="fa-solid fa-bag-shopping"></i> Shop Now</a>
+                </div>
+            </div>
+
+            <!-- Slide 2 -->
+            <div class="slide">
+                <img src="https://images.unsplash.com/photo-1628088062854-d1870b4553da?auto=format&fit=crop&w=1200&q=80" alt="Pure Ghee and Cream">
+                <div class="slide-content">
+                    <h1>Desi Cow A2 Ghee & Fresh Cream</h1>
+                    <p>Paramparik tarike se tayaar shuddh desi ghee aur makkhan ki lajawab khushboo.</p>
+                    <a href="/MilkProducts/products" class="slide-btn"><i class="fa-solid fa-bag-shopping"></i> Order Ghee</a>
+                </div>
+            </div>
+
+            <!-- Slide 3 -->
+            <div class="slide">
+                <img src="https://images.unsplash.com/photo-1559561853-08451507cbe7?auto=format&fit=crop&w=1200&q=80" alt="Soft Fresh Paneer">
+                <div class="slide-content">
+                    <h1>Soft & Fresh Paneer</h1>
+                    <p>Har roz taaza aur high-protein paneer aapki pasandida dish ke liye.</p>
+                    <a href="/MilkProducts/products" class="slide-btn"><i class="fa-solid fa-bag-shopping"></i> Buy Paneer</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slider Navigation Buttons -->
+        <button class="prev-btn" onclick="prevSlide()"><i class="fa-solid fa-chevron-left"></i></button>
+        <button class="next-btn" onclick="nextSlide()"><i class="fa-solid fa-chevron-right"></i></button>
+    </div>
+
+    <!-- Main Content Grid -->
+    <main class="container">
+        <h2 class="section-title">Hamare Top Dairy Products</h2>
+
+        <div class="product-grid">
+            <!-- Product 1 -->
+            <div class="product-card">
+                <div>
+                    <img src="https://images.unsplash.com/photo-1550583724-b2692b85b150?auto=format&fit=crop&w=500&q=80" alt="Full Cream Dudh">
+                    <h3>Taaza Full Cream Dudh</h3>
+                    <p class="price">₹66 / Litre</p>
+                </div>
+                <button class="btn-add-cart" onclick="addToCart(101, 'Taaza Full Cream Dudh', 66, 'https://images.unsplash.com/photo-1550583724-b2692b85b150?auto=format&fit=crop&w=500&q=80')">
+                    <i class="fa-solid fa-cart-plus"></i> Add to Cart
+                </button>
+            </div>
+
+            <!-- Product 2 -->
+            <div class="product-card">
+                <div>
+                    <img src="https://images.unsplash.com/photo-1488477181946-6428a0291777?auto=format&fit=crop&w=500&q=80" alt="Shuddh Dahi">
+                    <h3>Shuddh Dahi (Curd)</h3>
+                    <p class="price">₹50 / Kg</p>
+                </div>
+                <button class="btn-add-cart" onclick="addToCart(102, 'Shuddh Dahi (Curd)', 50, 'https://images.unsplash.com/photo-1488477181946-6428a0291777?auto=format&fit=crop&w=500&q=80')">
+                    <i class="fa-solid fa-cart-plus"></i> Add to Cart
+                </button>
+            </div>
+
+            <!-- Product 3 -->
+            <div class="product-card">
+                <div>
+                    <img src="https://images.unsplash.com/photo-1631451095765-2c91616fc9e6?auto=format&fit=crop&w=500&q=80" alt="Desi Ghee">
+                    <h3>Desi A2 Cow Ghee</h3>
+                    <p class="price">₹850 / Kg</p>
+                </div>
+                <button class="btn-add-cart" onclick="addToCart(103, 'Desi A2 Cow Ghee', 850, 'https://images.unsplash.com/photo-1631451095765-2c91616fc9e6?auto=format&fit=crop&w=500&q=80')">
+                    <i class="fa-solid fa-cart-plus"></i> Add to Cart
+                </button>
+            </div>
+
+            <!-- Product 4 -->
+            <div class="product-card">
+                <div>
+                    <img src="https://images.unsplash.com/photo-1559561853-08451507cbe7?auto=format&fit=crop&w=500&q=80" alt="Fresh Paneer">
+                    <h3>Soft Fresh Paneer</h3>
+                    <p class="price">₹90 / 250g</p>
+                </div>
+                <button class="btn-add-cart" onclick="addToCart(106, 'Soft Fresh Paneer', 90, 'https://images.unsplash.com/photo-1559561853-08451507cbe7?auto=format&fit=crop&w=500&q=80')">
+                    <i class="fa-solid fa-cart-plus"></i> Add to Cart
+                </button>
+            </div>
+
+            <!-- Product 5 -->
+            <div class="product-card">
+                <div>
+                    <img src="https://images.unsplash.com/photo-1589985107050-d7771e45c87b?auto=format&fit=crop&w=500&q=80" alt="Fresh Butter">
+                    <h3>White Desi Makkhan</h3>
+                    <p class="price">₹110 / 200g</p>
+                </div>
+                <button class="btn-add-cart" onclick="addToCart(107, 'White Desi Makkhan', 110, 'https://images.unsplash.com/photo-1589985107050-d7771e45c87b?auto=format&fit=crop&w=500&q=80')">
+                    <i class="fa-solid fa-cart-plus"></i> Add to Cart
+                </button>
+            </div>
+
+            <!-- Product 6 -->
+            <div class="product-card">
+                <div>
+                    <img src="https://images.unsplash.com/photo-1528751014936-863e6e7a319c?auto=format&fit=crop&w=500&q=80" alt="Masala Chaach">
+                    <h3>Thandi Masala Chaach</h3>
+                    <p class="price">₹20 / Bottle</p>
+                </div>
+                <button class="btn-add-cart" onclick="addToCart(104, 'Thandi Masala Chaach', 20, 'https://images.unsplash.com/photo-1528751014936-863e6e7a319c?auto=format&fit=crop&w=500&q=80')">
+                    <i class="fa-solid fa-cart-plus"></i> Add to Cart
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Toast Alert -->
+    <div id="toast">Item cart me add ho gaya hai!</div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 DudhDahi. Sabhi Adhikar Surakshit Hain.</p>
+    </footer>
+
+    <!-- Scripts for Slider & Cart Logic -->
+    <script>
+        // Image Slider Carousel Logic
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+
+        function showSlide(index) {
+            if (index >= totalSlides) currentSlide = 0;
+            else if (index < 0) currentSlide = totalSlides - 1;
+            else currentSlide = index;
+
+            document.getElementById('slider').style.transform = `translateX(-${currentSlide * 100}%)`;
+        }
+
+        function nextSlide() { showSlide(currentSlide + 1); }
+        function prevSlide() { showSlide(currentSlide - 1); }
+
+        // Auto slide change (Har 4 seconds par)
+        setInterval(() => { nextSlide(); }, 4000);
+
+        // Shopping Cart LocalStorage System
+        function getCart() {
+            return JSON.parse(localStorage.getItem('dudhDahiCart')) || [];
+        }
+
+        function updateCartBadge() {
+            let cart = getCart();
+            let totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+            let badge = document.getElementById('cart-count');
+            if (badge) badge.innerText = totalCount;
+        }
+
+        function addToCart(id, name, price, image) {
+            let cart = getCart();
+            let itemIndex = cart.findIndex(item => item.id === id);
+
+            if (itemIndex > -1) {
+                cart[itemIndex].quantity += 1;
+            } else {
+                cart.push({ id: id, name: name, price: price, image: image, quantity: 1 });
+            }
+
+            localStorage.setItem('dudhDahiCart', JSON.stringify(cart));
+            updateCartBadge();
+            showToast(name + " cart me add ho gaya!");
+        }
+
+        function showToast(message) {
+            let toast = document.getElementById("toast");
+            toast.innerText = message;
+            toast.className = "show";
+            setTimeout(function () {
+                toast.className = toast.className.replace("show", "");
+            }, 2500);
+        }
+
+        document.addEventListener("DOMContentLoaded", updateCartBadge);
+    </script>
+</body>
+</html>

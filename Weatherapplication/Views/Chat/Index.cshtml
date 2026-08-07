@@ -1,0 +1,49 @@
+﻿@{
+    ViewData["Title"] = "Gemini Chatbot";
+}
+
+<div class="container mt-4">
+    <h2>Gemini AI Chatbot</h2>
+    <div id="chat-box" class="border p-3 mb-3" style="height: 350px; overflow-y: scroll; background-color: #f8f9fa;">
+        <!-- Chat history yahan dikhegi -->
+    </div>
+
+    <div class="input-group mb-3">
+        <input type="text" id="user-input" class="form-control" placeholder="Poochiye apna sawal..." />
+        <button class="btn btn-primary" onclick="sendMessage()">Send</button>
+    </div>
+</div>
+
+<script>
+      async function sendMessage() {
+        const inputField = document.getElementById("user-input");
+        const message = inputField.value.trim();
+        if (!message) return;
+
+        try {
+            const response = await fetch('/Chat/SendMessage', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ message: message })
+            });
+
+            // Debugging Line: Text ke roop me response padhein
+            const rawText = await response.text();
+            console.log("Server Response:", rawText);
+
+            if (!response.ok) {
+                alert("Server Error! Check Browser Console (F12)");
+                return;
+            }
+
+            // Response sahi hai tabhi parse karein
+            const data = JSON.parse(rawText);
+            document.getElementById("chat-box").innerHTML += `<div><strong>Gemini:</strong> ${data.reply}</div>`;
+
+        } catch (error) {
+            console.error("Parsing Error:", error);
+        }
+    }
+</script>

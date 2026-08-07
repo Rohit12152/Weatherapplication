@@ -46,7 +46,7 @@ public class LoginController : Controller
 
             TempData["Error"] = "Invalid Email or Password";
         }
-
+ 
         return View("LoginView", model);
     }
     public async Task<IActionResult> Logout()

@@ -31,13 +31,13 @@
         </div>
 
         <div class="col-md-6">
-            <label>Student</label>
+            <label>Customer</label>
 
             <select asp-for="StudentId"
                     asp-items="ViewBag.StudentList"
                     class="form-control">
 
-                <option value="">Select Student</option>
+                <option value="">Select Customer</option>
 
             </select>
         </div>
@@ -69,19 +69,32 @@
                 int index = 0;
             }
 
-            @if (ViewBag.SalesItemDetail != null)
+            @if (ViewBag.SalesItems != null)
             {
-                foreach (Weatherapplication.Models.SalesItemDetail item in ViewBag.SalesItemDetail)
+                foreach (Weatherapplication.Models.SalesItemDetail item in ViewBag.SalesItems)
                 {
                     <tr>
 
                         <td>
+                            <select name="salesitemdetails[@index].categoryid"
+                                    class="form-control categoryDropdown">
+                                <option value="">Select Category</option>
+                                @foreach (var itm in ViewBag.CategoryList)
+                                {
+                                    if (itm.Value == item.categoryid.ToString())
+                                    {
+                                        <option value="@itm.Value" selected>@itm.Text</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@itm.Value">@itm.Text</option>
+                                    }
+                                }
+                            </select>
 
                             <select name="salesitemdetails[@index].ItemId"
                                     class="form-control itemDropdown">
-
                                 <option value="">Select Item</option>
-
                                 @foreach (var itm in ViewBag.ItemList)
                                 {
                                     if (itm.Value == item.ItemId.ToString())
@@ -93,7 +106,6 @@
                                         <option value="@itm.Value">@itm.Text</option>
                                     }
                                 }
-
                             </select>
 
                         </td>
@@ -224,6 +236,17 @@
         <tr>
 
             <td>
+             <select name="salesitemdetails[${rowIndex}].categoryid"
+                        class="form-control categoryDropdown">
+
+                    <option value="">Select Category</option>
+
+                    @foreach (var item in ViewBag.CategoryList)
+                    {
+                                <option value="@item.Value">@item.Text</option>
+                    }
+
+                </select>
 
                 <select name="salesitemdetails[${rowIndex}].ItemId"
                         class="form-control itemDropdown">
@@ -374,4 +397,37 @@
         });
     });
       
+        $(document).on('change', '.categoryDropdown', function () {
+
+        var row = $(this).closest('tr');
+        var categoryId = $(this).val();
+
+        var itemDropdown = row.find('.itemDropdown');
+
+        itemDropdown.empty();
+        itemDropdown.append('<option value="">Select Item</option>');
+
+        if (categoryId == '')
+            return;
+
+        $.ajax({
+            url: '/Sales/GetItemsByCategory',
+            type: 'GET',
+            data: { categoryId: categoryId },
+            success: function (data) {
+
+                $.each(data, function (i, item) {
+
+                    itemDropdown.append(
+                        '<option value="' + item.id + '">' +
+                        item.itemName +
+                        '</option>'
+                    );
+
+                });
+
+            }
+        });
+
+    });
 </script>

@@ -32,5 +32,7 @@ namespace Weatherapplication.Models
         public string? ItemDescription { get; set; }
 
         public DateTime? CreatedDate { get; set; }
+        public int? categoryid { get; set; }
+        public decimal? CurrentStock { get; set; }
     }
 }

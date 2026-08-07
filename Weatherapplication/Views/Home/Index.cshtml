@@ -19,83 +19,88 @@
 
     <style>
 
-        body{
-            background:#f4f7fc;
-            font-family:'Segoe UI';
+        body {
+            background: #f4f7fc;
+            font-family: 'Segoe UI';
         }
 
-        .dashboard-header{
-            background:white;
-            padding:20px;
-            border-radius:15px;
-            margin-bottom:20px;
-            box-shadow:0 2px 10px rgba(0,0,0,.08);
+        .dashboard-header {
+            background: #fff;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,.08);
         }
 
-        .stat-card{
-            border:none;
-            border-radius:20px;
-            color:white;
-            overflow:hidden;
-            transition:.3s;
+        .stat-card {
+            border: none;
+            border-radius: 20px;
+            color: #fff;
+            overflow: hidden;
+            transition: .3s;
         }
 
-        .stat-card:hover{
-            transform:translateY(-5px);
+            .stat-card:hover {
+                transform: translateY(-5px);
+            }
+
+        .sales {
+            background: linear-gradient(135deg,#00c853,#64dd17);
         }
 
-        .sales{
-            background:linear-gradient(135deg,#00c853,#64dd17);
+        .purchase {
+            background: linear-gradient(135deg,#2962ff,#00b0ff);
         }
 
-        .purchase{
-            background:linear-gradient(135deg,#2962ff,#00b0ff);
+        .stock {
+            background: linear-gradient(135deg,#ff6d00,#ffab00);
         }
 
-        .stock{
-            background:linear-gradient(135deg,#ff6d00,#ffab00);
+        .profit {
+            background: linear-gradient(135deg,#7b1fa2,#e040fb);
         }
 
-        .profit{
-            background:linear-gradient(135deg,#7b1fa2,#e040fb);
+        .stat-card .card-body {
+            padding: 25px;
         }
 
-        .stat-card .card-body{
-            padding:25px;
+        .stat-card i {
+            font-size: 42px;
+            opacity: .25;
+            float: right;
         }
 
-        .stat-card i{
-            font-size:40px;
-            opacity:.3;
-            float:right;
+        .custom-card {
+            border: none;
+            border-radius: 20px;
+            background: #fff;
+            box-shadow: 0 2px 15px rgba(0,0,0,.08);
         }
 
-        .custom-card{
-            background:#fff;
-            border:none;
-            border-radius:20px;
-            box-shadow:0 2px 15px rgba(0,0,0,.08);
+        .table th {
+            background: #1f2937;
+            color: #fff;
         }
 
-        .card-title{
-            font-weight:600;
+        .progress {
+            height: 10px;
         }
 
-        .table th{
-            background:#1f2937;
-            color:white;
+        .chart-box {
+            height: 300px;
+            position: relative;
         }
 
-        .progress{
-            height:10px;
+        .custom-card {
+            border: none;
+            border-radius: 20px;
+            background: #fff;
+            box-shadow: 0 2px 15px rgba(0,0,0,.08);
         }
 
-        .badge-stock{
-            background:red;
-        }
-
-        .badge-good{
-            background:green;
+        .card-body h5 {
+            font-size: 16px;
+            font-weight: 600;
         }
 
     </style>
@@ -105,18 +110,36 @@
 
     <div class="container-fluid p-4">
 
-        <div class="dashboard-header d-flex justify-content-between">
-            <div>
-                <h3>Inventory Dashboard</h3>
-                <small>Sales • Purchase • Stock Management</small>
+        <!-- Header -->
+
+        <div class="dashboard-header">
+
+            <div class="row align-items-center">
+
+                <div class="col-md-6">
+                    <h3>Inventory Dashboard</h3>
+                    <small>Sales • Purchase • Stock Management</small>
+                </div>
+
+                <div class="col-md-3">
+                    <select id="dashboardFilter" class="form-select">
+                        <option value="today">Today</option>
+                        <option value="weekly">Weekly</option>
+                        <option value="monthly" selected>Monthly</option>
+                    </select>
+                </div>
+
+                <div class="col-md-3 text-end">
+                    <button class="btn btn-primary">
+                        <i class="fa fa-file-export"></i> Export Report
+                    </button>
+                </div>
+
             </div>
 
-            <button class="btn btn-primary">
-                <i class="fa fa-file"></i> Export Report
-            </button>
         </div>
 
-        <!-- Cards -->
+        <!-- KPI Cards -->
 
         <div class="row g-4">
 
@@ -125,7 +148,7 @@
                     <div class="card-body">
                         <i class="fa fa-chart-line"></i>
                         <h6>Total Sales</h6>
-                        <h2>₹12.5L</h2>
+                        <h2 id="salesAmount"></h2>
                     </div>
                 </div>
             </div>
@@ -135,7 +158,7 @@
                     <div class="card-body">
                         <i class="fa fa-cart-shopping"></i>
                         <h6>Total Purchase</h6>
-                        <h2>₹9.2L</h2>
+                        <h2 id="purchaseAmount">₹9,20,000</h2>
                     </div>
                 </div>
             </div>
@@ -145,7 +168,7 @@
                     <div class="card-body">
                         <i class="fa fa-boxes-stacked"></i>
                         <h6>Total Stock</h6>
-                        <h2>15,250</h2>
+                        <h2 id="stockAmount">15,250</h2>
                     </div>
                 </div>
             </div>
@@ -155,107 +178,64 @@
                     <div class="card-body">
                         <i class="fa fa-indian-rupee-sign"></i>
                         <h6>Profit</h6>
-                        <h2>₹3.3L</h2>
+                        <h2 id="profitAmount">₹3,30,000</h2>
                     </div>
                 </div>
             </div>
 
         </div>
 
-        <!-- Charts -->
+        <!-- Charts Row -->
 
-        <div class="row mt-4">
+        <div class="row mt-4 g-4">
+
+            <!-- Pie Chart -->
 
             <div class="col-lg-4">
 
-                <div class="card custom-card">
+                <div class="card custom-card h-100">
                     <div class="card-body">
-                        <h5 class="card-title">Sales vs Purchase</h5>
 
-                        <canvas id="pieChart"></canvas>
+                        <h5 class="mb-3">Sales vs Purchase</h5>
+
+                        <div class="chart-box">
+                            <canvas id="pieChart"></canvas>
+                        </div>
 
                     </div>
                 </div>
 
             </div>
 
-            <div class="col-lg-8">
+            <!-- Line Chart -->
 
-                <div class="card custom-card">
+            <div class="col-lg-4">
+
+                <div class="card custom-card h-100">
                     <div class="card-body">
-                        <h5 class="card-title">Monthly Sales Trend</h5>
 
-                        <canvas id="lineChart"></canvas>
+                        <h5 class="mb-3">Sales Trend</h5>
+
+                        <div class="chart-box">
+                            <canvas id="lineChart"></canvas>
+                        </div>
 
                     </div>
                 </div>
 
             </div>
 
-        </div>
+            <!-- Bar Chart -->
 
-        <!-- Stock + Top Items -->
+            <div class="col-lg-4">
 
-        <div class="row mt-4">
-
-            <div class="col-lg-6">
-
-                <div class="card custom-card">
+                <div class="card custom-card h-100">
                     <div class="card-body">
 
-                        <h5>Top Selling Products</h5>
+                        <h5 class="mb-3">Top Selling Products</h5>
 
-                        <table class="table table-hover mt-3">
-                            <tr>
-                                <th>Item</th>
-                                <th>Qty Sold</th>
-                            </tr>
-
-                            <tr>
-                                <td>Shirt</td>
-                                <td>520</td>
-                            </tr>
-
-                            <tr>
-                                <td>Jeans</td>
-                                <td>430</td>
-                            </tr>
-
-                            <tr>
-                                <td>T-Shirt</td>
-                                <td>350</td>
-                            </tr>
-                        </table>
-
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="col-lg-6">
-
-                <div class="card custom-card">
-                    <div class="card-body">
-
-                        <h5>Low Stock Alerts</h5>
-
-                        <div class="mt-4">
-
-                            Shirt XL
-                            <div class="progress mb-3">
-                                <div class="progress-bar bg-danger" style="width:15%"></div>
-                            </div>
-
-                            Jeans 32
-                            <div class="progress mb-3">
-                                <div class="progress-bar bg-warning" style="width:25%"></div>
-                            </div>
-
-                            Jacket M
-                            <div class="progress">
-                                <div class="progress-bar bg-danger" style="width:10%"></div>
-                            </div>
-
+                        <div class="chart-box">
+                            <canvas id="barChart"></canvas>
                         </div>
 
                     </div>
@@ -265,7 +245,7 @@
 
         </div>
 
-        <!-- Recent Transactions -->
+        <!-- Stock Alert + Recent Sales -->
 
         <div class="row mt-4">
 
@@ -274,28 +254,22 @@
                 <div class="card custom-card">
                     <div class="card-body">
 
-                        <h5>Recent Sales</h5>
+                        <h5>Low Stock Alerts</h5>
 
-                        <table class="table">
-                            <tr>
-                                <th>Invoice</th>
-                                <th>Customer</th>
-                                <th>Amount</th>
-                            </tr>
+                        Shirt XL
+                        <div class="progress mb-3">
+                            <div class="progress-bar bg-danger" style="width:15%"></div>
+                        </div>
 
-                            <tr>
-                                <td>INV001</td>
-                                <td>Rahul</td>
-                                <td>₹5000</td>
-                            </tr>
+                        Jeans 32
+                        <div class="progress mb-3">
+                            <div class="progress-bar bg-warning" style="width:25%"></div>
+                        </div>
 
-                            <tr>
-                                <td>INV002</td>
-                                <td>Amit</td>
-                                <td>₹7500</td>
-                            </tr>
-
-                        </table>
+                        Jacket M
+                        <div class="progress">
+                            <div class="progress-bar bg-danger" style="width:10%"></div>
+                        </div>
 
                     </div>
                 </div>
@@ -307,27 +281,25 @@
                 <div class="card custom-card">
                     <div class="card-body">
 
-                        <h5>Recent Purchases</h5>
+                        <h5>Recent Sales</h5>
 
-                        <table class="table">
+                        <table class="table table-hover">
+
                             <tr>
-                                <th>PO No</th>
-                                <th>Vendor</th>
+                                <th>Invoice</th>
+                                <th>Customer</th>
                                 <th>Amount</th>
                             </tr>
-
-                            <tr>
-                                <td>PO001</td>
-                                <td>ABC Traders</td>
-                                <td>₹20000</td>
-                            </tr>
-
-                            <tr>
-                                <td>PO002</td>
-                                <td>XYZ Traders</td>
-                                <td>₹15000</td>
-                            </tr>
-
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@item.SalesNo</td>
+                                    <td>@item.StudentName</td>
+                                    <td>
+                                        ₹ @String.Format("{0:N2}", item.NetAmount)
+                                    </td>
+                                </tr>
+                            }
                         </table>
 
                     </div>
@@ -343,27 +315,113 @@
 
     <script>
 
-        new Chart(document.getElementById('pieChart'),{
-            type:'pie',
-            data:{
-                labels:['Sales','Purchase'],
-                datasets:[{
-                    data:[1250000,920000]
-                }]
-            }
-        });
+               $(document).ready(function () {
 
-        new Chart(document.getElementById('lineChart'),{
-            type:'line',
-            data:{
-                labels:['Jan','Feb','Mar','Apr','May','Jun'],
-                datasets:[{
-                    label:'Sales',
-                    data:[120000,150000,180000,220000,250000,300000]
-                }]
-            }
-        });
+            // PIE CHART
+            const pieChart = new Chart(document.getElementById('pieChart'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['Sales', 'Purchase'],
+                    datasets: [{
+                        data: [0, 0],
+                        backgroundColor: [
+                            '#00c853',
+                            '#2962ff'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
 
+            // LINE CHART (Static)
+            const lineChart = new Chart(document.getElementById('lineChart'), {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                    datasets: [{
+                        label: 'Sales',
+                        data: [120000, 150000, 180000, 220000, 250000, 300000],
+                        borderColor: '#2962ff',
+                        backgroundColor: 'rgba(41,98,255,0.15)',
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+
+            // BAR CHART (Static)
+            const barChart = new Chart(document.getElementById('barChart'), {
+                type: 'bar',
+                data: {
+                    labels: ['Shirt', 'Jeans', 'T-Shirt', 'Jacket'],
+                    datasets: [{
+                        label: 'Qty Sold',
+                        data: [520, 430, 350, 290],
+                        backgroundColor: [
+                            '#00c853',
+                            '#2962ff',
+                            '#ff6d00',
+                            '#7b1fa2'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+
+            loadDashboard("monthly");
+
+            $("#dashboardFilter").change(function () {
+
+                loadDashboard($(this).val());
+
+            });
+
+            function loadDashboard(filter) {
+
+                $.ajax({
+
+                    url: '/Home/GetDashboardData',
+                    type: 'GET',
+                    data: { filter: filter },
+
+                    success: function (res) {
+
+                        $("#salesAmount").text("₹" + Number(res.totalSales).toLocaleString());
+                        $("#purchaseAmount").text("₹" + Number(res.totalPurchase).toLocaleString());
+                        $("#stockAmount").text("₹" + Number(res.totalStock).toLocaleString());
+                        $("#profitAmount").text("₹" + Number(res.profit).toLocaleString());
+
+                        // Update Pie Chart
+                        pieChart.data.datasets[0].data = [
+                            Number(res.totalSales),
+                            Number(res.totalPurchase)
+                        ];
+
+                        pieChart.update();
+
+                    },
+
+                    error: function (xhr) {
+
+                        console.log(xhr.responseText);
+
+                    }
+
+                });
+
+            }
+
+        });
     </script>
 
 </body>

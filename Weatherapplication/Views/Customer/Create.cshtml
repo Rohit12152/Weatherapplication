@@ -1,0 +1,365 @@
+﻿@{
+    ViewData["Title"] = "Customer Master";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid py-3"
+     ng-app="ERPApp"
+     ng-controller="CustomerController">
+
+    <input type="hidden" id="hdnId" value="@ViewBag.Id" />
+
+    <div class="card shadow border-0">
+
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+
+            <h4 class="mb-0">
+                <i class="bi bi-person-vcard"></i>
+                {{Customer.id ? 'Update Customer' : 'Create Customer'}}
+            </h4>
+
+            <a href="/Customer/Index"
+               class="btn btn-light btn-sm">
+                <i class="bi bi-arrow-left"></i>
+                Back
+            </a>
+
+        </div>
+
+        <div class="card-body">
+
+            <!-- Basic Details -->
+
+            <h5 class="border-bottom pb-2 mb-3">
+                Basic Details
+            </h5>
+
+            <div class="row g-3">
+
+                <div class="col-12 col-sm-6 col-lg-3">
+                    <label class="form-label">Customer Code</label>
+                    <input type="text"
+                           class="form-control"
+                           ng-model="Customer.customerCode">
+                </div>
+
+                <div class="col-12 col-sm-6 col-lg-3">
+                    <label class="form-label">Customer Name</label>
+                    <input type="text"
+                           class="form-control"
+                           ng-model="Customer.customerName">
+                </div>
+
+                <div class="col-12 col-sm-6 col-lg-3">
+                    <label class="form-label">Company Name</label>
+                    <input type="text"
+                           class="form-control"
+                           ng-model="Customer.companyName">
+                </div>
+
+                <div class="col-12 col-sm-6 col-lg-3">
+                    <label class="form-label">Contact Person</label>
+                    <input type="text"
+                           class="form-control"
+                           ng-model="Customer.contactPerson">
+                </div>
+
+            </div>
+
+            <!-- Contact Details -->
+
+            <h5 class="border-bottom pb-2 mt-4 mb-3">
+                Contact Details
+            </h5>
+
+            <div class="row g-3">
+
+                <div class="col-12 col-sm-6 col-lg-3">
+                    <label class="form-label">Mobile No</label>
+                    <input type="text"
+                           class="form-control"
+                           ng-model="Customer.mobileNo">
+                </div>
+
+                <div class="col-12 col-sm-6 col-lg-3">
+                    <label class="form-label">Alternate Mobile</label>
+                    <input type="text"
+                           class="form-control"
+                           ng-model="Customer.alternateMobile">
+                </div>
+
+                <div class="col-12 col-sm-6 col-lg-3">
+                    <label class="form-label">Email</label>
+                    <input type="email"
+                           class="form-control"
+                           ng-model="Customer.email">
+                </div>
+
+                <div class="col-12 col-sm-6 col-lg-3">
+                    <label class="form-label">GST No</label>
+                    <input type="text"
+                           class="form-control"
+                           ng-model="Customer.gstNo">
+                </div>
+
+            </div>
+
+            <!-- Identity -->
+
+            <h5 class="border-bottom pb-2 mt-4 mb-3">
+                Identity Details
+            </h5>
+
+            <div class="row g-3">
+
+                <div class="col-12 col-sm-6 col-lg-3">
+                    <label class="form-label">PAN No</label>
+                    <input type="text"
+                           class="form-control"
+                           ng-model="Customer.panNo">
+                </div>
+
+                <div class="col-12 col-sm-6 col-lg-3">
+                    <label class="form-label">Aadhaar No</label>
+                    <input type="text"
+                           class="form-control"
+                           ng-model="Customer.aadhaarNo">
+                </div>
+
+                <div class="col-12 col-sm-6 col-lg-3">
+
+                    <label class="form-label">
+                        Customer Type
+                    </label>
+
+                    <select class="form-select"
+                            ng-model="Customer.customerType">
+
+                        <option value="">Select</option>
+                        <option>Retail</option>
+                        <option>Wholesale</option>
+                        <option>Distributor</option>
+
+                    </select>
+
+                </div>
+
+                <div class="col-12 col-sm-6 col-lg-3">
+
+                    <label class="form-label">
+                        Credit Limit
+                    </label>
+
+                    <input type="number"
+                           class="form-control"
+                           ng-model="Customer.creditLimit">
+
+                </div>
+
+            </div>
+
+            <!-- Accounts -->
+
+            <h5 class="border-bottom pb-2 mt-4 mb-3">
+                Accounts Details
+            </h5>
+
+            <div class="row g-3">
+
+                <div class="col-12 col-sm-6 col-lg-4">
+
+                    <label class="form-label">
+                        Payment Terms
+                    </label>
+
+                    <input type="text"
+                           class="form-control"
+                           ng-model="Customer.paymentTerms">
+
+                </div>
+
+                <div class="col-12 col-sm-6 col-lg-4">
+
+                    <label class="form-label">
+                        Opening Balance
+                    </label>
+
+                    <input type="number"
+                           class="form-control"
+                           ng-model="Customer.openingBalance">
+
+                </div>
+
+                <div class="col-12 col-sm-6 col-lg-4">
+
+                    <label class="form-label">
+                        Balance Type
+                    </label>
+
+                    <select class="form-select"
+                            ng-model="Customer.balanceType">
+
+                        <option value="">Select</option>
+                        <option>Dr</option>
+                        <option>Cr</option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+            <!-- Address -->
+
+            <h5 class="border-bottom pb-2 mt-4 mb-3">
+                Address Details
+            </h5>
+
+            <div class="row g-3">
+
+                <div class="col-12 col-lg-6">
+
+                    <label class="form-label">
+                        Address 1
+                    </label>
+
+                    <textarea rows="3"
+                              class="form-control"
+                              ng-model="Customer.address1">
+                    </textarea>
+
+                </div>
+
+                <div class="col-12 col-lg-6">
+
+                    <label class="form-label">
+                        Address 2
+                    </label>
+
+                    <textarea rows="3"
+                              class="form-control"
+                              ng-model="Customer.address2">
+                    </textarea>
+
+                </div>
+
+            </div>
+
+            <div class="row g-3 mt-2">
+
+                <div class="col-12 col-sm-6 col-lg-3">
+
+                    <label class="form-label">
+                        City
+                    </label>
+
+                    <input type="text"
+                           class="form-control"
+                           ng-model="Customer.city">
+
+                </div>
+
+                <div class="col-12 col-sm-6 col-lg-3">
+
+                    <label class="form-label">
+                        State
+                    </label>
+
+                    <input type="text"
+                           class="form-control"
+                           ng-model="Customer.state">
+
+                </div>
+
+                <div class="col-12 col-sm-6 col-lg-3">
+
+                    <label class="form-label">
+                        Country
+                    </label>
+
+                    <input type="text"
+                           class="form-control"
+                           ng-model="Customer.country">
+
+                </div>
+
+                <div class="col-12 col-sm-6 col-lg-3">
+
+                    <label class="form-label">
+                        Pincode
+                    </label>
+
+                    <input type="text"
+                           class="form-control"
+                           ng-model="Customer.pincode">
+
+                </div>
+
+            </div>
+
+            <!-- Status -->
+
+            <div class="form-check mt-4">
+
+                <input class="form-check-input"
+                       type="checkbox"
+                       ng-model="Customer.isActive">
+
+                <label class="form-check-label">
+
+                    Active Customer
+
+                </label>
+
+            </div>
+
+            <hr>
+
+            <div class="d-flex flex-wrap justify-content-end gap-2">
+
+                <a href="/Customer/Index"
+                   class="btn btn-secondary">
+
+                    <i class="bi bi-arrow-left"></i>
+
+                    Back
+
+                </a>
+
+                <button class="btn btn-warning"
+                        ng-click="Clear()">
+
+                    <i class="bi bi-arrow-repeat"></i>
+
+                    Clear
+
+                </button>
+
+                <button class="btn btn-success"
+                        ng-click="SaveCustomer()">
+
+                    <i class="bi"
+                       ng-class="Customer.id ? 'bi-pencil-square' : 'bi-save'">
+                    </i>
+
+                    {{Customer.id ? 'Update Customer' : 'Save Customer'}}
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts {
+
+    <script src="~/js/app.js"></script>
+
+    <script src="~/js/Services/CustomerService.js"></script>
+
+    <script src="~/js/Controllers/CustomerController.js"></script>
+
+}

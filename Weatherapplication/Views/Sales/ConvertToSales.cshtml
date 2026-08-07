@@ -44,7 +44,7 @@
 
         <thead>
             <tr>
-                <th>Item Id</th>
+                <th>Items</th>
                 <th>Qty</th>
                 <th>Rate</th>
                 <th>Amount</th>
@@ -61,9 +61,14 @@
                 <tr>
 
                     <td>
+                        <select asp-for="SalesItems[i].categoryid"
+                                asp-items="ViewBag.CategoryList"
+                                class="form-control categoryDropdown">
+                            <option value="">Select Category</option>
+                        </select>
                         <select asp-for="SalesItems[i].ItemId"
                                 asp-items="ViewBag.ItemList"
-                                class="form-control">
+                                class="form-control itemDropdown">
                             <option value="">Select Item</option>
                         </select>
                     </td>
@@ -136,4 +141,39 @@
         Save Sales
     </button>
 
+    <script>
+             $(document).on('change', '.categoryDropdown', function () {
+
+            var row = $(this).closest('tr');
+            var categoryId = $(this).val();
+
+            var itemDropdown = row.find('.itemDropdown');
+
+            itemDropdown.empty();
+            itemDropdown.append('<option value="">Select Item</option>');
+
+            if (categoryId == '')
+                return;
+
+            $.ajax({
+                url: '/Sales/GetItemsByCategory',
+                type: 'GET',
+                data: { categoryId: categoryId },
+                success: function (data) {
+
+                    $.each(data, function (i, item) {
+
+                        itemDropdown.append(
+                            '<option value="' + item.id + '">' +
+                            item.itemName +
+                            '</option>'
+                        );
+
+                    });
+
+                }
+            });
+
+        });
+    </script>
 </form>

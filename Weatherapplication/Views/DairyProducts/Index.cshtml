@@ -1,0 +1,230 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DudhDahi — Farm-fresh Milk, Dahi, Ghee & More, Delivered Daily</title>
+    <meta name="description" content="DudhDahi delivers farm-fresh milk, dahi, ghee, chaas and cream straight from local dairies to your door — every single morning.">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 60 60%22><text y=%2248%22 font-size=%2248%22>🥛</text></svg>">
+    <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
+</head>
+<body>
+
+    <header class="site-header">
+        <nav class="nav" id="mainNav">
+            <a href="index" class="brand">
+                <svg class="brand-mark" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><path d="M15 5h10v6l4 5v17a3 3 0 0 1-3 3H14a3 3 0 0 1-3-3V16l4-5V5Z" fill="var(--leaf)" /><path d="M12 20h16v11a3 3 0 0 1-3 3H15a3 3 0 0 1-3-3V20Z" fill="var(--gold)" /></svg>
+                Dudh<span class="dahi">Dahi</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="index" aria-current="page">Home</a></li>
+                <li><a href="products">Products</a></li>
+                <li><a href="about">Our Farm</a></li>
+                <li><a href="contact">Contact</a></li>
+            </ul>
+            <div class="nav-actions">
+                <a href="contact" class="btn btn-ghost btn-sm">Get in touch</a>
+                <button class="cart-btn" id="cartToggle" aria-label="Open cart">
+                    <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="var(--leaf-deep)" stroke-width="1.8"><path d="M3 4h2l2.4 12.4a2 2 0 0 0 2 1.6h8.2a2 2 0 0 0 2-1.6L21 8H6" /><circle cx="10" cy="21" r="1.4" /><circle cx="18" cy="21" r="1.4" /></svg>
+                    <span class="cart-count">0</span>
+                </button>
+                <button class="nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span></button>
+            </div>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="hero-copy" data-reveal>
+            <span class="eyebrow">Fresh from the dairy · Delivered by 7 AM</span>
+            <h1>Milk that still<br>tastes like <em>the farm.</em></h1>
+            <p class="lede">DudhDahi collects milk, dahi, ghee, chaas and cream from local dairies each dawn and gets it to your door before breakfast — no middlemen, no additives, no compromise.</p>
+            <div class="hero-cta">
+                <a href="products" class="btn btn-primary">Shop the dairy →</a>
+                <a href="about" class="btn btn-ghost">How we source</a>
+            </div>
+            <div class="hero-stats">
+                <div><strong>4 AM</strong><span>Daily collection</span></div>
+                <div><strong>120+</strong><span>Partner farms</span></div>
+                <div><strong>0</strong><span>Preservatives added</span></div>
+            </div>
+        </div>
+
+        <div class="hero-art" data-reveal>
+            <svg class="pot-scene" viewBox="0 0 420 440" xmlns="http://www.w3.org/2000/svg">
+                <ellipse cx="210" cy="410" rx="120" ry="16" fill="var(--leaf-deep)" opacity="0.08" />
+                <path d="M150 40 C150 90 155 120 168 150" stroke="var(--gold-soft)" stroke-width="10" stroke-linecap="round" fill="none" opacity="0.85" />
+                <circle cx="150" cy="34" r="9" fill="var(--gold-soft)" />
+                <path d="M130 168 C90 190 82 240 100 292 C112 328 150 356 210 356 C270 356 308 328 320 292 C338 240 330 190 290 168 C290 168 300 150 268 140 C240 132 180 132 152 140 C120 150 130 168 130 168Z" fill="var(--clay)" />
+                <path d="M130 168 C90 190 82 240 100 292 C112 328 150 356 210 356 C270 356 308 328 320 292 C338 240 330 190 290 168" fill="none" stroke="var(--leaf-deep)" stroke-width="2" opacity="0.15" />
+                <ellipse cx="210" cy="168" rx="60" ry="16" fill="#A8552E" />
+                <ellipse cx="210" cy="164" rx="52" ry="12" fill="var(--gold-soft)" opacity="0.9" />
+                <path d="M150 200c25 10 95 10 120 0" stroke="#8f4a29" stroke-width="2" opacity="0.4" fill="none" />
+                <path d="M140 250c30 12 110 12 140 0" stroke="#8f4a29" stroke-width="2" opacity="0.4" fill="none" />
+                <path d="M300 150c14-10 30-8 36 4-14 6-28 4-36-4Z" fill="var(--leaf)" />
+                <path d="M300 150c-6-14 2-28 16-32-2 16-6 26-16 32Z" fill="var(--leaf)" />
+                <g class="droplet" style="left:150px; top:60px; animation-delay:.2s;">
+                    <svg width="14" height="18" viewBox="0 0 14 18"><path d="M7 0C7 0 0 9 0 13a7 7 0 0 0 14 0C14 9 7 0 7 0Z" fill="var(--gold-soft)" /></svg>
+                </g>
+                <g class="droplet" style="left:172px; top:90px; animation-delay:1.4s;">
+                    <svg width="10" height="13" viewBox="0 0 14 18"><path d="M7 0C7 0 0 9 0 13a7 7 0 0 0 14 0C14 9 7 0 7 0Z" fill="var(--gold)" /></svg>
+                </g>
+            </svg>
+        </div>
+    </section>
+
+    <div class="strip" aria-hidden="true">
+        <div class="strip-track">
+            <span>Milk</span><span>Dahi</span><span>Ghee</span><span>Chaas</span><span>Malai</span>
+            <span>Milk</span><span>Dahi</span><span>Ghee</span><span>Chaas</span><span>Malai</span>
+        </div>
+    </div>
+
+    <section class="section">
+        <div class="section-head" data-reveal>
+            <div>
+                <span class="eyebrow">Why DudhDahi</span>
+                <h2>Farm to doorstep,<br>with nothing lost in between.</h2>
+            </div>
+            <p class="lede">Every product on our shelf can be traced back to the farm and the morning it was collected.</p>
+        </div>
+        <div class="feature-grid">
+            <div class="feature-card" data-reveal>
+                <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="var(--leaf)" stroke-width="1.8"><path d="M12 2v6M12 22v-6M4.9 4.9l4.2 4.2M14.9 14.9l4.2 4.2M2 12h6M22 12h-6M4.9 19.1l4.2-4.2M14.9 9.1l4.2-4.2" /></svg></div>
+                <h3>Collected at dawn</h3>
+                <p>Milk leaves the farm before sunrise and reaches processing within two hours.</p>
+            </div>
+            <div class="feature-card" data-reveal>
+                <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="var(--leaf)" stroke-width="1.8"><path d="M12 21s-8-4.5-8-11a5 5 0 0 1 8-4 5 5 0 0 1 8 4c0 6.5-8 11-8 11Z" /></svg></div>
+                <h3>No shortcuts</h3>
+                <p>No preservatives, no synthetic thickeners — just milk, culture and time.</p>
+            </div>
+            <div class="feature-card" data-reveal>
+                <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="var(--leaf)" stroke-width="1.8"><rect x="3" y="10" width="14" height="9" rx="1.5" /><path d="M7 10V7a3 3 0 0 1 6 0v3M17 13h4v4a2 2 0 0 1-2 2h-2" /></svg></div>
+                <h3>120+ small farms</h3>
+                <p>We work directly with family-run dairies, paying fair prices for every litre.</p>
+            </div>
+            <div class="feature-card" data-reveal>
+                <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="var(--leaf)" stroke-width="1.8"><path d="M3 12h4l2-8 4 16 2-8h6" /></svg></div>
+                <h3>Cold chain, always</h3>
+                <p>From farm to fridge to your door — kept below 4°C without a single break.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section section-tight">
+        <div class="section-head" data-reveal>
+            <div>
+                <span class="eyebrow">This morning's basket</span>
+                <h2>A few daily favourites.</h2>
+            </div>
+            <a href="products" class="btn btn-ghost">View full range →</a>
+        </div>
+        <div class="product-grid" id="featuredGrid"></div>
+    </section>
+
+    <section class="section section-tight">
+        <div class="stats-band" data-reveal>
+            <div><strong>18k+</strong><span>Homes served daily</span></div>
+            <div><strong>4.8★</strong><span>Average rating</span></div>
+            <div><strong>7 AM</strong><span>Guaranteed delivery</span></div>
+            <div><strong>0</strong><span>Additives, always</span></div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="section-head" data-reveal>
+            <div>
+                <span class="eyebrow">From our customers</span>
+                <h2>What the neighbourhood is saying.</h2>
+            </div>
+        </div>
+        <div class="testi-grid">
+            <div class="testi-card" data-reveal>
+                <div class="stars">★★★★★</div>
+                <p>"The dahi actually sets like my grandmother's — thick enough to hold a spoon upright. Been ordering for a year now."</p>
+                <div class="testi-person">
+                    <div class="testi-avatar">R</div>
+                    <div><strong>Ritika Sharma</strong><span>Gurugram</span></div>
+                </div>
+            </div>
+            <div class="testi-card" data-reveal>
+                <div class="stars">★★★★★</div>
+                <p>"Switched our whole household to the A2 ghee. You can genuinely smell the difference when it hits a hot tadka."</p>
+                <div class="testi-person">
+                    <div class="testi-avatar">A</div>
+                    <div><strong>Arjun Mehta</strong><span>Sector 45</span></div>
+                </div>
+            </div>
+            <div class="testi-card" data-reveal>
+                <div class="stars">★★★★★</div>
+                <p>"Delivery is like clockwork — 7 AM, every single day, rain or shine. Never once missed a morning."</p>
+                <div class="testi-person">
+                    <div class="testi-avatar">S</div>
+                    <div><strong>Simran Kaur</strong><span>DLF Phase 3</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="cta-band" data-reveal>
+            <h2>Your first delivery is on us — try the morning basket.</h2>
+            <a href="contact" class="btn btn-primary">Start my subscription</a>
+        </div>
+    </section>
+
+    <footer class="site-footer">
+        <svg class="footer-wave" viewBox="0 0 1440 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0 30c240 30 480-30 720 0s480 30 720 0v30H0Z" fill="var(--bg)" /></svg>
+        <div class="footer-grid">
+            <div>
+                <div class="footer-brand">
+                    <svg width="26" height="26" viewBox="0 0 40 40"><path d="M15 5h10v6l4 5v17a3 3 0 0 1-3 3H14a3 3 0 0 1-3-3V16l4-5V5Z" fill="var(--gold)" /></svg>
+                    Dudh<span style="color:var(--gold-soft)">Dahi</span>
+                </div>
+                <p>Farm-fresh dairy, collected at dawn and delivered before breakfast — across Gurugram and Delhi NCR.</p>
+            </div>
+            <div>
+                <h4>Explore</h4>
+                <ul>
+                    <li><a href="products">All products</a></li>
+                    <li><a href="about">Our farm story</a></li>
+                    <li><a href="contact">Subscriptions</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4>Categories</h4>
+                <ul>
+                    <li><a href="products">Milk</a></li>
+                    <li><a href="products">Dahi &amp; Curd</a></li>
+                    <li><a href="products">Ghee</a></li>
+                    <li><a href="products">Chaas &amp; Cream</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4>Get in touch</h4>
+                <p>hello@dudhdahi.in<br>+91 98765 43210<br>Sector 14, Gurugram, Haryana</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span>© 2026 DudhDahi. All rights reserved.</span>
+            <span>Made with care for small dairy farms.</span>
+        </div>
+    </footer>
+
+    <div class="cart-overlay" id="cartOverlay"></div>
+    <aside class="cart-drawer" id="cartDrawer" aria-label="Shopping cart">
+        <div class="cart-head">
+            <h3>Your basket</h3>
+            <button class="cart-close" id="cartClose" aria-label="Close cart">✕</button>
+        </div>
+        <div class="cart-items" id="cartItems"></div>
+        <div class="cart-foot">
+            <div class="cart-total"><span>Total</span><span id="cartTotal">₹0</span></div>
+            <a href="contact" class="btn btn-primary">Checkout via WhatsApp</a>
+        </div>
+    </aside>
+    <div class="toast" id="toast"></div>
+
+    <script src="~/js/script.js" asp-append-version="true"></script>
+</body>
+</html>

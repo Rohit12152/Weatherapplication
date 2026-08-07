@@ -27,12 +27,12 @@
 
         <div class="card-body">
 
-            <table class="table table-bordered table-hover table-striped">
+            <table class="table table-bordered table-hover table-striped" id="itemTable">
 
                 <thead class="table-dark">
                     <tr>
                         <th>Sales No</th>
-                        <th>Quotation Ref</th>
+                        <th>Reference</th>
                         <th>Student</th>
                         <th>Date</th>
                         <th>Net Amount</th>
@@ -50,12 +50,10 @@
 
                             <td>@item.ReferenceQuotationNo</td>
 
-                            <td>@item.StudentName</td>
+                            <td>@item.CustomerName</td>
 
                             <td>
-                                @(item.SalesDate == null
-                                                            ? ""
-                                                            : Convert.ToDateTime(item.SalesDate).ToString("dd/MM/yyyy"))
+                                @(item.SalesDate == null ? "" : Convert.ToDateTime(item.SalesDate).ToString("dd/MM/yyyy"))
                         </td>
 
                             <td>
@@ -75,14 +73,17 @@
                                    class="btn btn-warning btn-sm">
                                     <i class="fa fa-pen"></i>
                                 </a>
-
-                                <a asp-action="Delete"
-                                   asp-route-id="@item.Id"
+                                <a href="javascript:void(0);"
                                    class="btn btn-danger btn-sm"
-                                   onclick="return confirm('Delete this Sales Record ?')">
+                                   onclick="DeleteQuotation(@item.Id)">
                                     <i class="fa fa-trash"></i>
                                 </a>
-
+                                <a asp-controller="DeliveryOrder"
+                                   asp-action="Index"
+                                   asp-route-soid="@item.Id"
+                                   class="btn btn-primary">
+                                    Create DO
+                                </a>
                             </td>
 
                         </tr>
@@ -122,7 +123,7 @@
         }).then((result) => {
 
             if (result.isConfirmed) {
-                window.location.href = '/Quotation/Delete/' + id;
+                window.location.href = '/Sales/Delete/' + id;
             }
 
         });

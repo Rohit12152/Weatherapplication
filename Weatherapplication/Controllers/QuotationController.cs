@@ -17,19 +17,12 @@ namespace Weatherapplication.Controllers
         }
         public IActionResult Create(int? id)
         {
-            //var userId = Convert.ToInt32(User.FindFirst("UserId")?.Value);
-            //ViewBag.StudentList = new SelectList(
-            //    _context.StudentDetails.ToList(),
-            //    "Id",
-            //    "StudentName");
             var userId = Convert.ToInt32(User.FindFirst("UserId")?.Value);
 
-            ViewBag.StudentList = new SelectList(_context.StudentDetails.Where(x => x.UserId == userId).ToList(), "Id", "StudentName");
+            ViewBag.StudentList = new SelectList(_context.CustomerMaster.Where(x => x.UserId == userId && x.partytype == 1 && x.IsActive == true).ToList(), "Id", "CustomerName");
 
-            ViewBag.ItemList = new SelectList(
-                _context.ItemMaster.ToList(),
-                "Id",
-                "ItemName");
+            ViewBag.ItemList = new SelectList(_context.ItemMaster.ToList(),"Id","ItemName");
+            ViewBag.CategoryList = new SelectList(_context.Categories.ToList(), "CategoryId", "CategoryName");
 
             if (id == null)
             {
@@ -47,9 +40,27 @@ namespace Weatherapplication.Controllers
             var quotation = _context.QuotationDetail
                  .FirstOrDefault(x => x.Id == id);
 
-            var items = _context.QuotationItemDetail
-                .Where(x => x.QuotationId == id)
-                .ToList();
+            //var items = _context.QuotationItemDetail
+            //    .Where(x => x.QuotationId == id)
+            //    .ToList();
+
+            var items = (from q in _context.QuotationItemDetail
+                         join i in _context.ItemMaster
+                         on q.ItemId equals i.Id
+                         where q.QuotationId == id
+                         select new QuotationItemDetail
+                         {
+                             Id = q.Id,
+                             QuotationId = q.QuotationId,
+                             ItemId = q.ItemId,
+                             Qty = q.Qty,
+                             Rate = q.Rate,
+                             Amount = q.Amount,
+                             GST = q.GST,
+                             TaxAmount = q.TaxAmount,
+                             TotalAmount = q.TotalAmount,
+                             categoryid = i.categoryid
+                         }).ToList();
 
             ViewBag.QuotationItems = items;
             ViewBag.RowCount = items.Count;
@@ -81,8 +92,8 @@ namespace Weatherapplication.Controllers
                 return RedirectToAction("Create");
             }
             var userId = Convert.ToInt32(User.FindFirst("UserId")?.Value);
-            decimal gross = quotationDetails.Sum(x => x.Amount);
-            decimal tax = quotationDetails.Sum(x => x.TaxAmount);
+            double gross = quotationDetails.Sum(x => x.Amount ?? 0);
+            double tax = quotationDetails.Sum(x => x.TaxAmount ?? 0);
 
             quotation.TotalAmount = gross;
             quotation.TotalTax = tax;
@@ -187,6 +198,20 @@ namespace Weatherapplication.Controllers
                       .FirstOrDefault();
 
             return Json(item);
+        }
+        [HttpGet]
+        public JsonResult GetItemsByCategory(int categoryId)
+        {
+            var items = _context.ItemMaster
+                .Where(x => x.categoryid == categoryId)
+                .Select(x => new
+                {
+                    id = x.Id,
+                    itemName = x.ItemName
+                })
+                .ToList();
+
+            return Json(items);
         }
     }
 }

@@ -1,0 +1,1551 @@
+﻿@* <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DudhDahi — Farm-fresh Milk, Dahi, Ghee & More, Delivered Daily</title>
+<meta name="description" content="DudhDahi delivers farm-fresh milk, dahi, ghee, chaas and cream straight from local dairies to your door — every single morning.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 60 60%22><text y=%2248%22 font-size=%2248%22>🥛</text></svg>">
+<style>
+/* ==========================================================================
+   DudhDahi — Design System
+   Palette: milk cream base / deep leaf green / ghee gold / soft clay
+   Display: Fraunces  |  Body: Work Sans  |  Utility: IBM Plex Mono
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Work+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+:root {
+  --bg: #FBF6EA;
+  --bg-deep: #F3ECDA;
+  --surface: #FFFFFF;
+  --ink: #23281E;
+  --ink-soft: #57594C;
+  --leaf: #33472B;
+  --leaf-deep: #202E1A;
+  --gold: #C69329;
+  --gold-soft: #E9C874;
+  --clay: #BC663A;
+  --cream-card: #F4E9CE;
+  --line: rgba(35, 40, 30, 0.12);
+  --shadow: 0 12px 32px rgba(34, 40, 26, 0.10);
+
+  --font-display: 'Fraunces', serif;
+  --font-body: 'Work Sans', sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+
+  --radius-s: 10px;
+  --radius-m: 18px;
+  --radius-l: 28px;
+
+  --container: 1180px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+img, svg { display: block; max-width: 100%; }
+a { color: inherit; text-decoration: none; }
+ul { list-style: none; }
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
+
+.wrap {
+  width: 100%;
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 0 32px;
+}
+
+/* -------------------- Motion -------------------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+[data-reveal].is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* -------------------- Typography -------------------- */
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--clay);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.eyebrow::before {
+  content: "";
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--gold);
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  color: var(--leaf-deep);
+  font-weight: 600;
+  line-height: 1.08;
+  letter-spacing: -0.01em;
+}
+
+h1 { font-size: clamp(40px, 6vw, 76px); font-weight: 600; }
+h2 { font-size: clamp(30px, 4vw, 46px); }
+h3 { font-size: clamp(20px, 2.2vw, 26px); }
+
+p.lede {
+  font-size: clamp(16px, 1.6vw, 19px);
+  color: var(--ink-soft);
+  max-width: 54ch;
+}
+
+.price {
+  font-family: var(--font-mono);
+  font-weight: 500;
+}
+
+/* -------------------- Buttons -------------------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 26px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 15px;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+  white-space: nowrap;
+}
+.btn-primary {
+  background: var(--leaf);
+  color: var(--bg);
+  box-shadow: 0 8px 20px rgba(51, 71, 43, 0.28);
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 26px rgba(51, 71, 43, 0.34); }
+.btn-ghost {
+  background: transparent;
+  color: var(--leaf-deep);
+  border: 1.5px solid var(--line);
+}
+.btn-ghost:hover { border-color: var(--leaf); background: rgba(51,71,43,0.06); }
+.btn-gold {
+  background: var(--gold);
+  color: #2A1E05;
+  box-shadow: 0 8px 20px rgba(198, 147, 41, 0.35);
+}
+.btn-gold:hover { transform: translateY(-2px); }
+.btn-sm { padding: 10px 18px; font-size: 13.5px; }
+.btn:focus-visible, a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible {
+  outline: 2.5px solid var(--clay);
+  outline-offset: 3px;
+}
+
+/* -------------------- Header / Nav -------------------- */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(251, 246, 234, 0.86);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 32px;
+  max-width: var(--container);
+  margin: 0 auto;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-display);
+  font-size: 23px;
+  font-weight: 700;
+  color: var(--leaf-deep);
+}
+.brand .brand-mark { width: 34px; height: 34px; }
+.brand .dahi { color: var(--clay); }
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 34px;
+  font-weight: 500;
+  font-size: 15px;
+}
+.nav-links a {
+  position: relative;
+  padding: 4px 0;
+  color: var(--ink);
+}
+.nav-links a::after {
+  content: "";
+  position: absolute;
+  left: 0; bottom: -3px;
+  width: 0; height: 2px;
+  background: var(--clay);
+  transition: width 0.25s ease;
+}
+.nav-links a:hover::after,
+.nav-links a[aria-current="page"]::after { width: 100%; }
+.nav-links a[aria-current="page"] { color: var(--leaf-deep); font-weight: 600; }
+
+.nav-actions { display: flex; align-items: center; gap: 16px; }
+
+.cart-btn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px; height: 42px;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  transition: transform 0.2s ease;
+}
+.cart-btn:hover { transform: translateY(-2px); }
+.cart-count {
+  position: absolute;
+  top: -5px; right: -5px;
+  background: var(--clay);
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+}
+
+.nav-toggle {
+  display: none;
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  align-items: center;
+  justify-content: center;
+}
+.nav-toggle span, .nav-toggle span::before, .nav-toggle span::after {
+  content: "";
+  display: block;
+  width: 18px; height: 2px;
+  background: var(--ink);
+  position: relative;
+  transition: 0.25s ease;
+}
+.nav-toggle span::before { position: absolute; top: -6px; }
+.nav-toggle span::after { position: absolute; top: 6px; }
+
+/* -------------------- Footer -------------------- */
+.site-footer {
+  background: var(--leaf-deep);
+  color: #E7E4D6;
+  margin-top: 120px;
+  position: relative;
+  overflow: hidden;
+}
+.footer-wave { display: block; width: 100%; margin-bottom: -6px; }
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr 1.2fr;
+  gap: 48px;
+  padding: 20px 32px 40px;
+  max-width: var(--container);
+  margin: 0 auto;
+}
+.footer-grid h4 { color: #F4E9CE; font-size: 15px; margin-bottom: 16px; font-family: var(--font-body); font-weight: 600; letter-spacing: 0.02em;}
+.footer-grid p, .footer-grid a { color: #C7C6B8; font-size: 14.5px; }
+.footer-grid ul li { margin-bottom: 10px; }
+.footer-grid ul li a:hover { color: var(--gold-soft); }
+.footer-brand { display: flex; align-items: center; gap: 10px; font-family: var(--font-display); font-size: 22px; color: #F4E9CE; margin-bottom: 14px; }
+.footer-bottom {
+  border-top: 1px solid rgba(231,228,214,0.14);
+  padding: 18px 32px;
+  max-width: var(--container);
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  color: #9A9A86;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+/* -------------------- Hero -------------------- */
+.hero {
+  position: relative;
+  padding: 76px 32px 40px;
+  max-width: var(--container);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: 40px;
+  align-items: center;
+}
+.hero-copy .eyebrow { margin-bottom: 18px; }
+.hero-copy h1 { margin-bottom: 20px; }
+.hero-copy h1 em { font-style: italic; color: var(--clay); }
+.hero-copy p.lede { margin-bottom: 32px; }
+.hero-cta { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 34px;}
+.hero-stats { display: flex; gap: 34px; }
+.hero-stats div strong { display: block; font-family: var(--font-display); font-size: 26px; color: var(--leaf-deep); }
+.hero-stats div span { font-size: 12.5px; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.06em; }
+
+.hero-art { position: relative; display: flex; align-items: center; justify-content: center; }
+.pot-scene { width: 100%; max-width: 460px; }
+
+.droplet {
+  position: absolute;
+  animation: fall 3.6s ease-in infinite;
+  opacity: 0;
+}
+@keyframes fall {
+  0% { transform: translateY(-10px); opacity: 0; }
+  15% { opacity: 0.9; }
+  70% { opacity: 0.7; }
+  100% { transform: translateY(120px); opacity: 0; }
+}
+
+/* -------------------- Marquee strip -------------------- */
+.strip {
+  background: var(--leaf);
+  color: var(--bg);
+  overflow: hidden;
+  padding: 13px 0;
+  margin-top: 60px;
+}
+.strip-track {
+  display: flex;
+  width: max-content;
+  animation: scroll-strip 26s linear infinite;
+  gap: 0;
+}
+.strip-track span {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0 28px;
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  white-space: nowrap;
+}
+.strip-track span::after { content: "•"; color: var(--gold); }
+@keyframes scroll-strip {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+/* -------------------- Section shell -------------------- */
+.section { padding: 100px 32px; max-width: var(--container); margin: 0 auto; }
+.section-tight { padding-top: 40px; }
+.section-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 24px;
+  margin-bottom: 48px;
+  flex-wrap: wrap;
+}
+.section-head .eyebrow { margin-bottom: 14px; }
+
+/* -------------------- Product cards -------------------- */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 26px;
+}
+.product-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+
+.product-card {
+  background: var(--surface);
+  border-radius: var(--radius-m);
+  padding: 22px;
+  border: 1px solid var(--line);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+.product-card:hover { transform: translateY(-6px); box-shadow: var(--shadow); }
+.product-media {
+  background: var(--cream-card);
+  border-radius: var(--radius-s);
+  aspect-ratio: 1 / 0.85;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 18px;
+  position: relative;
+  overflow: hidden;
+}
+.product-media svg { width: 62%; height: 62%; }
+.product-tag {
+  position: absolute;
+  top: 10px; left: 10px;
+  background: var(--leaf-deep);
+  color: var(--bg);
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  padding: 4px 9px;
+  border-radius: 999px;
+  letter-spacing: 0.04em;
+}
+.product-tag.tag-gold { background: var(--gold); color: #2A1E05; }
+.product-name { font-family: var(--font-display); font-size: 19px; font-weight: 600; margin-bottom: 4px; }
+.product-desc { font-size: 13.5px; color: var(--ink-soft); margin-bottom: 16px; flex-grow: 1; }
+.product-foot { display: flex; align-items: center; justify-content: space-between; }
+.product-price { font-size: 17px; color: var(--leaf-deep); }
+.product-price span { font-size: 12px; color: var(--ink-soft); font-family: var(--font-body); }
+.add-btn {
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  background: var(--leaf);
+  color: var(--bg);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+.add-btn:hover { transform: scale(1.08); background: var(--leaf-deep); }
+.add-btn.added { background: var(--clay); }
+
+/* -------------------- Category filter pills -------------------- */
+.filter-row { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 40px; }
+.pill {
+  padding: 9px 18px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  font-size: 13.5px;
+  font-weight: 500;
+  background: var(--surface);
+  transition: all 0.2s ease;
+}
+.pill.active, .pill:hover { background: var(--leaf); color: var(--bg); border-color: var(--leaf); }
+
+/* -------------------- Why us / feature grid -------------------- */
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+.feature-card {
+  padding: 30px 24px;
+  border-radius: var(--radius-m);
+  background: var(--surface);
+  border: 1px solid var(--line);
+}
+.feature-card .ico {
+  width: 46px; height: 46px;
+  border-radius: 12px;
+  background: var(--bg-deep);
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 18px;
+}
+.feature-card .ico svg { width: 24px; height: 24px; }
+.feature-card h3 { margin-bottom: 8px; font-size: 18px; }
+.feature-card p { font-size: 14px; color: var(--ink-soft); }
+
+/* -------------------- Split section (about / story) -------------------- */
+.split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: center;
+}
+.split img, .split svg { width: 100%; border-radius: var(--radius-l); }
+.split .eyebrow { margin-bottom: 16px; }
+.split h2 { margin-bottom: 18px; }
+.split p.lede { margin-bottom: 22px; }
+
+.checklist li {
+  display: flex;
+  gap: 12px;
+  padding: 10px 0;
+  border-top: 1px solid var(--line);
+  font-size: 14.5px;
+  align-items: center;
+}
+.checklist li:last-child { border-bottom: 1px solid var(--line); }
+.checklist svg { width: 18px; height: 18px; flex-shrink: 0; color: var(--clay); }
+
+/* -------------------- Process timeline (about) -------------------- */
+.process { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; position: relative; }
+.process::before {
+  content: "";
+  position: absolute;
+  top: 26px; left: 6%; right: 6%;
+  height: 2px;
+  background: repeating-linear-gradient(90deg, var(--line) 0 8px, transparent 8px 16px);
+}
+.process-step { text-align: left; padding-right: 20px; position: relative; }
+.process-num {
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 2px solid var(--leaf);
+  color: var(--leaf-deep);
+  font-family: var(--font-display);
+  font-size: 19px;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 18px;
+  position: relative;
+  z-index: 2;
+}
+.process-step h3 { font-size: 17px; margin-bottom: 8px; }
+.process-step p { font-size: 13.5px; color: var(--ink-soft); }
+
+/* -------------------- Stats band -------------------- */
+.stats-band {
+  background: var(--leaf-deep);
+  border-radius: var(--radius-l);
+  padding: 56px 48px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  color: var(--bg);
+}
+.stats-band div strong { display: block; font-family: var(--font-display); font-size: 40px; color: var(--gold-soft); }
+.stats-band div span { font-size: 13px; color: #C7C6B8; text-transform: uppercase; letter-spacing: 0.05em; }
+
+/* -------------------- Testimonials -------------------- */
+.testi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.testi-card {
+  background: var(--cream-card);
+  padding: 28px;
+  border-radius: var(--radius-m);
+}
+.testi-card .stars { color: var(--gold); margin-bottom: 14px; font-size: 14px; letter-spacing: 2px; }
+.testi-card p { font-size: 14.5px; color: var(--ink); margin-bottom: 20px; font-style: italic; }
+.testi-person { display: flex; align-items: center; gap: 12px; }
+.testi-avatar {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: var(--leaf);
+  color: var(--bg);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display);
+  font-size: 15px;
+}
+.testi-person strong { display: block; font-size: 14px; }
+.testi-person span { font-size: 12px; color: var(--ink-soft); }
+
+/* -------------------- CTA band -------------------- */
+.cta-band {
+  background: var(--gold);
+  border-radius: var(--radius-l);
+  padding: 60px 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 30px;
+  flex-wrap: wrap;
+  position: relative;
+  overflow: hidden;
+}
+.cta-band h2 { color: #2A1E05; max-width: 480px; }
+.cta-band .btn-primary { background: var(--leaf-deep); }
+
+/* -------------------- Contact page -------------------- */
+.contact-grid {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: 54px;
+}
+.contact-card {
+  background: var(--surface);
+  border-radius: var(--radius-l);
+  padding: 40px;
+  border: 1px solid var(--line);
+}
+.field { margin-bottom: 20px; }
+.field label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: var(--leaf-deep);
+}
+.field input, .field select, .field textarea {
+  width: 100%;
+  padding: 13px 16px;
+  border-radius: var(--radius-s);
+  border: 1.5px solid var(--line);
+  background: var(--bg);
+  font-family: var(--font-body);
+  font-size: 14.5px;
+  color: var(--ink);
+  transition: border-color 0.2s ease;
+}
+.field input:focus, .field select:focus, .field textarea:focus { border-color: var(--leaf); outline: none; }
+.field textarea { resize: vertical; min-height: 110px; }
+.field-error { font-size: 12px; color: var(--clay); margin-top: 6px; display: none; }
+.field.has-error input, .field.has-error textarea { border-color: var(--clay); }
+.field.has-error .field-error { display: block; }
+.form-msg {
+  display: none;
+  padding: 14px 18px;
+  border-radius: var(--radius-s);
+  background: var(--leaf);
+  color: var(--bg);
+  font-size: 14px;
+  margin-top: 18px;
+}
+.form-msg.show { display: block; }
+
+.info-list { display: flex; flex-direction: column; gap: 22px; margin-top: 30px; }
+.info-item { display: flex; gap: 16px; align-items: flex-start; }
+.info-item .ico {
+  width: 44px; height: 44px; border-radius: 12px;
+  background: var(--cream-card);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.info-item .ico svg { width: 20px; height: 20px; color: var(--clay); }
+.info-item h4 { font-size: 15px; margin-bottom: 3px; }
+.info-item p, .info-item a { font-size: 14px; color: var(--ink-soft); }
+
+.map-frame {
+  border-radius: var(--radius-l);
+  overflow: hidden;
+  border: 1px solid var(--line);
+  margin-top: 30px;
+  aspect-ratio: 16/7;
+}
+.map-frame iframe { width: 100%; height: 100%; border: 0; }
+
+.faq-item {
+  border-top: 1px solid var(--line);
+  padding: 20px 0;
+}
+.faq-item:last-child { border-bottom: 1px solid var(--line); }
+.faq-q {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--leaf-deep);
+}
+.faq-q .plus { transition: transform 0.25s ease; font-size: 20px; color: var(--clay); }
+.faq-item.open .faq-q .plus { transform: rotate(45deg); }
+.faq-a {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+  font-size: 14.5px;
+  color: var(--ink-soft);
+}
+.faq-a-inner { padding-top: 12px; max-width: 60ch; }
+
+/* -------------------- Cart drawer -------------------- */
+.cart-overlay {
+  position: fixed; inset: 0;
+  background: rgba(34,40,26,0.4);
+  z-index: 200;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.cart-overlay.open { opacity: 1; pointer-events: auto; }
+.cart-drawer {
+  position: fixed;
+  top: 0; right: 0; bottom: 0;
+  width: 400px;
+  max-width: 92vw;
+  background: var(--bg);
+  z-index: 201;
+  transform: translateX(100%);
+  transition: transform 0.35s ease;
+  display: flex;
+  flex-direction: column;
+  box-shadow: -20px 0 50px rgba(0,0,0,0.15);
+}
+.cart-drawer.open { transform: translateX(0); }
+.cart-head {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 24px; border-bottom: 1px solid var(--line);
+}
+.cart-head h3 { font-size: 20px; }
+.cart-close { width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--line); display: flex; align-items: center; justify-content: center; font-size: 18px; }
+.cart-items { flex: 1; overflow-y: auto; padding: 16px 24px; }
+.cart-item { display: flex; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--line); align-items: center; }
+.cart-item-media { width: 56px; height: 56px; border-radius: 10px; background: var(--cream-card); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.cart-item-media svg { width: 60%; height: 60%; }
+.cart-item-info { flex: 1; }
+.cart-item-info strong { font-size: 14px; display: block; }
+.cart-item-info span { font-size: 12.5px; color: var(--ink-soft); }
+.cart-item-qty { display: flex; align-items: center; gap: 8px; margin-top: 6px; }
+.qty-btn { width: 22px; height: 22px; border-radius: 50%; border: 1px solid var(--line); font-size: 13px; display: flex; align-items: center; justify-content: center; }
+.cart-item-remove { color: var(--clay); font-size: 12px; text-decoration: underline; margin-left: auto; }
+.cart-empty { text-align: center; padding: 60px 20px; color: var(--ink-soft); font-size: 14px; }
+.cart-foot { padding: 22px 24px 26px; border-top: 1px solid var(--line); }
+.cart-total { display: flex; justify-content: space-between; font-size: 16px; margin-bottom: 16px; font-weight: 600; }
+.cart-foot .btn { width: 100%; justify-content: center; }
+
+/* -------------------- Toast -------------------- */
+.toast {
+  position: fixed;
+  bottom: 28px; left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--leaf-deep);
+  color: var(--bg);
+  padding: 13px 24px;
+  border-radius: 999px;
+  font-size: 14px;
+  z-index: 300;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s ease;
+  display: flex; align-items: center; gap: 10px;
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* -------------------- Page hero (inner pages) -------------------- */
+.page-hero {
+  padding: 64px 32px 20px;
+  max-width: var(--container);
+  margin: 0 auto;
+  text-align: left;
+}
+.page-hero .eyebrow { margin-bottom: 16px; }
+.page-hero h1 { font-size: clamp(36px, 5vw, 58px); margin-bottom: 14px; }
+
+/* -------------------- Responsive -------------------- */
+@media (max-width: 980px) {
+  .hero { grid-template-columns: 1fr; padding-top: 50px; }
+  .hero-art { order: -1; max-width: 340px; margin: 0 auto; }
+  .product-grid { grid-template-columns: repeat(2, 1fr); }
+  .product-grid.cols-3 { grid-template-columns: repeat(2, 1fr); }
+  .feature-grid { grid-template-columns: repeat(2, 1fr); }
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+  .stats-band { grid-template-columns: repeat(2, 1fr); }
+  .testi-grid { grid-template-columns: 1fr; }
+  .split { grid-template-columns: 1fr; gap: 36px; }
+  .split .split-media { order: -1; }
+  .process { grid-template-columns: 1fr 1fr; row-gap: 36px; }
+  .process::before { display: none; }
+  .contact-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 720px) {
+  .nav-links, .nav-actions .btn-ghost { display: none; }
+  .nav-toggle { display: flex; }
+  .nav.open .nav-links {
+    display: flex;
+    position: absolute;
+    top: 74px; left: 0; right: 0;
+    background: var(--bg);
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 24px 32px;
+    gap: 20px;
+    border-bottom: 1px solid var(--line);
+  }
+  .product-grid, .product-grid.cols-3 { grid-template-columns: 1fr 1fr; gap: 16px;}
+  .feature-grid { grid-template-columns: 1fr; }
+  .footer-grid { grid-template-columns: 1fr; gap: 30px; }
+  .stats-band { grid-template-columns: 1fr 1fr; padding: 40px 28px; }
+  .process { grid-template-columns: 1fr; }
+  .cta-band { flex-direction: column; text-align: center; }
+  .section { padding: 64px 20px; }
+  .hero { padding: 40px 20px 20px; }
+  .page-hero { padding: 48px 20px 10px; }
+  .wrap { padding: 0 20px; }
+  .nav { padding: 16px 20px; }
+}
+
+@media (max-width: 480px) {
+  .product-grid, .product-grid.cols-3 { grid-template-columns: 1fr; }
+  .hero-stats { flex-wrap: wrap; gap: 22px; }
+}
+
+
+/* single-page extras */
+section[id] { scroll-margin-top: 88px; }
+.sub-head { margin-bottom: 44px; }
+</style>
+</head>
+<body>
+
+<!-- ============ HEADER ============ -->
+<header class="site-header">
+  <nav class="nav" id="mainNav">
+    <a href="#hero" class="brand">
+      <svg class="brand-mark" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><path d="M15 5h10v6l4 5v17a3 3 0 0 1-3 3H14a3 3 0 0 1-3-3V16l4-5V5Z" fill="var(--leaf)"/><path d="M12 20h16v11a3 3 0 0 1-3 3H15a3 3 0 0 1-3-3V20Z" fill="var(--gold)"/></svg>
+      Dudh<span class="dahi">Dahi</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#hero">Home</a></li>
+      <li><a href="#products">Products</a></li>
+      <li><a href="#about">Our Farm</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a href="#contact" class="btn btn-ghost btn-sm">Get in touch</a>
+      <button class="cart-btn" id="cartToggle" aria-label="Open cart">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="var(--leaf-deep)" stroke-width="1.8"><path d="M3 4h2l2.4 12.4a2 2 0 0 0 2 1.6h8.2a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="10" cy="21" r="1.4"/><circle cx="18" cy="21" r="1.4"/></svg>
+        <span class="cart-count">0</span>
+      </button>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span></button>
+    </div>
+  </nav>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero" id="hero">
+  <div class="hero-copy" data-reveal>
+    <span class="eyebrow">Fresh from the dairy · Delivered by 7 AM</span>
+    <h1>Milk that still<br>tastes like <em>the farm.</em></h1>
+    <p class="lede">DudhDahi collects milk, dahi, ghee, chaas and cream from local dairies each dawn and gets it to your door before breakfast — no middlemen, no additives, no compromise.</p>
+    <div class="hero-cta">
+      <a href="#products" class="btn btn-primary">Shop the dairy →</a>
+      <a href="#about" class="btn btn-ghost">How we source</a>
+    </div>
+    <div class="hero-stats">
+      <div><strong>4 AM</strong><span>Daily collection</span></div>
+      <div><strong>120+</strong><span>Partner farms</span></div>
+      <div><strong>0</strong><span>Preservatives added</span></div>
+    </div>
+  </div>
+
+  <div class="hero-art" data-reveal>
+    <svg class="pot-scene" viewBox="0 0 420 440" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="210" cy="410" rx="120" ry="16" fill="var(--leaf-deep)" opacity="0.08"/>
+      <path d="M150 40 C150 90 155 120 168 150" stroke="var(--gold-soft)" stroke-width="10" stroke-linecap="round" fill="none" opacity="0.85"/>
+      <circle cx="150" cy="34" r="9" fill="var(--gold-soft)"/>
+      <path d="M130 168 C90 190 82 240 100 292 C112 328 150 356 210 356 C270 356 308 328 320 292 C338 240 330 190 290 168 C290 168 300 150 268 140 C240 132 180 132 152 140 C120 150 130 168 130 168Z" fill="var(--clay)"/>
+      <path d="M130 168 C90 190 82 240 100 292 C112 328 150 356 210 356 C270 356 308 328 320 292 C338 240 330 190 290 168" fill="none" stroke="var(--leaf-deep)" stroke-width="2" opacity="0.15"/>
+      <ellipse cx="210" cy="168" rx="60" ry="16" fill="#A8552E"/>
+      <ellipse cx="210" cy="164" rx="52" ry="12" fill="var(--gold-soft)" opacity="0.9"/>
+      <path d="M150 200c25 10 95 10 120 0" stroke="#8f4a29" stroke-width="2" opacity="0.4" fill="none"/>
+      <path d="M140 250c30 12 110 12 140 0" stroke="#8f4a29" stroke-width="2" opacity="0.4" fill="none"/>
+      <path d="M300 150c14-10 30-8 36 4-14 6-28 4-36-4Z" fill="var(--leaf)"/>
+      <path d="M300 150c-6-14 2-28 16-32-2 16-6 26-16 32Z" fill="var(--leaf)"/>
+      <g class="droplet" style="left:150px; top:60px; animation-delay:.2s;">
+        <svg width="14" height="18" viewBox="0 0 14 18"><path d="M7 0C7 0 0 9 0 13a7 7 0 0 0 14 0C14 9 7 0 7 0Z" fill="var(--gold-soft)"/></svg>
+      </g>
+      <g class="droplet" style="left:172px; top:90px; animation-delay:1.4s;">
+        <svg width="10" height="13" viewBox="0 0 14 18"><path d="M7 0C7 0 0 9 0 13a7 7 0 0 0 14 0C14 9 7 0 7 0Z" fill="var(--gold)"/></svg>
+      </g>
+    </svg>
+  </div>
+</section>
+
+<div class="strip" aria-hidden="true">
+  <div class="strip-track">
+    <span>Milk</span><span>Dahi</span><span>Ghee</span><span>Chaas</span><span>Malai</span>
+    <span>Milk</span><span>Dahi</span><span>Ghee</span><span>Chaas</span><span>Malai</span>
+  </div>
+</div>
+
+<!-- ============ FEATURES ============ -->
+<section class="section" id="why">
+  <div class="section-head" data-reveal>
+    <div>
+      <span class="eyebrow">Why DudhDahi</span>
+      <h2>Farm to doorstep,<br>with nothing lost in between.</h2>
+    </div>
+    <p class="lede">Every product on our shelf can be traced back to the farm and the morning it was collected.</p>
+  </div>
+  <div class="feature-grid">
+    <div class="feature-card" data-reveal>
+      <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="var(--leaf)" stroke-width="1.8"><path d="M12 2v6M12 22v-6M4.9 4.9l4.2 4.2M14.9 14.9l4.2 4.2M2 12h6M22 12h-6M4.9 19.1l4.2-4.2M14.9 9.1l4.2-4.2"/></svg></div>
+      <h3>Collected at dawn</h3>
+      <p>Milk leaves the farm before sunrise and reaches processing within two hours.</p>
+    </div>
+    <div class="feature-card" data-reveal>
+      <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="var(--leaf)" stroke-width="1.8"><path d="M12 21s-8-4.5-8-11a5 5 0 0 1 8-4 5 5 0 0 1 8 4c0 6.5-8 11-8 11Z"/></svg></div>
+      <h3>No shortcuts</h3>
+      <p>No preservatives, no synthetic thickeners — just milk, culture and time.</p>
+    </div>
+    <div class="feature-card" data-reveal>
+      <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="var(--leaf)" stroke-width="1.8"><rect x="3" y="10" width="14" height="9" rx="1.5"/><path d="M7 10V7a3 3 0 0 1 6 0v3M17 13h4v4a2 2 0 0 1-2 2h-2"/></svg></div>
+      <h3>120+ small farms</h3>
+      <p>We work directly with family-run dairies, paying fair prices for every litre.</p>
+    </div>
+    <div class="feature-card" data-reveal>
+      <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="var(--leaf)" stroke-width="1.8"><path d="M3 12h4l2-8 4 16 2-8h6"/></svg></div>
+      <h3>Cold chain, always</h3>
+      <p>From farm to fridge to your door — kept below 4°C without a single break.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FEATURED PRODUCTS ============ -->
+<section class="section section-tight">
+  <div class="section-head" data-reveal>
+    <div>
+      <span class="eyebrow">This morning's basket</span>
+      <h2>A few daily favourites.</h2>
+    </div>
+    <a href="#products" class="btn btn-ghost">View full range →</a>
+  </div>
+  <div class="product-grid" id="featuredGrid"><!-- injected by script --></div>
+</section>
+
+<!-- ============ FULL PRODUCT CATALOGUE ============ -->
+<section class="section" id="products">
+  <div class="section-head sub-head" data-reveal>
+    <div>
+      <span class="eyebrow">The full range</span>
+      <h2>Everything from this morning's collection.</h2>
+    </div>
+    <p class="lede">Twelve products, one promise: nothing added, nothing skipped.</p>
+  </div>
+  <div class="filter-row" data-reveal>
+    <button class="pill active" data-cat="all">All products</button>
+    <button class="pill" data-cat="milk">Milk</button>
+    <button class="pill" data-cat="dahi">Dahi &amp; Curd</button>
+    <button class="pill" data-cat="ghee">Ghee</button>
+    <button class="pill" data-cat="chach">Chaas</button>
+    <button class="pill" data-cat="cream">Cream &amp; Malai</button>
+  </div>
+  <div class="product-grid" id="productGrid"><!-- injected by script --></div>
+</section>
+
+<!-- ============ STATS BAND ============ -->
+<section class="section section-tight">
+  <div class="stats-band" data-reveal>
+    <div><strong>18k+</strong><span>Homes served daily</span></div>
+    <div><strong>4.8★</strong><span>Average rating</span></div>
+    <div><strong>7 AM</strong><span>Guaranteed delivery</span></div>
+    <div><strong>0</strong><span>Additives, always</span></div>
+  </div>
+</section>
+
+<!-- ============ ABOUT / STORY ============ -->
+<section class="section" id="about">
+  <div class="section-head sub-head" data-reveal>
+    <div>
+      <span class="eyebrow">Since 2016</span>
+      <h2>We didn't set out to build a brand.<br>Just a shorter road to your kitchen.</h2>
+    </div>
+  </div>
+  <div class="split">
+    <div data-reveal>
+      <span class="eyebrow">The problem we saw</span>
+      <h2>Milk was travelling further than it should.</h2>
+      <p class="lede">By the time packaged milk reached most kitchens, it had passed through three or four hands and picked up additives to survive the journey. Small farmers, meanwhile, were paid a fraction of what their milk was worth.</p>
+      <ul class="checklist">
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg> We collect directly from 120+ partner farms every dawn</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg> Farmers are paid within 24 hours, above market rate</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg> Products reach your door in under three hours from processing</li>
+      </ul>
+    </div>
+    <div class="split-media" data-reveal>
+      <svg viewBox="0 0 480 400" xmlns="http://www.w3.org/2000/svg">
+        <rect width="480" height="400" rx="28" fill="var(--cream-card)"/>
+        <ellipse cx="240" cy="330" rx="150" ry="18" fill="var(--leaf-deep)" opacity="0.08"/>
+        <ellipse cx="230" cy="230" rx="95" ry="60" fill="var(--leaf)"/>
+        <ellipse cx="150" cy="205" rx="34" ry="30" fill="var(--leaf)"/>
+        <circle cx="140" cy="195" r="6" fill="var(--bg)"/>
+        <path d="M118 175c-6-10-4-20 4-24 2 10 2 18-4 24Z" fill="var(--clay)"/>
+        <path d="M170 175c6-10 4-20-4-24-2 10-2 18 4 24Z" fill="var(--clay)"/>
+        <rect x="190" y="275" width="14" height="40" rx="6" fill="var(--leaf)"/>
+        <rect x="230" y="280" width="14" height="35" rx="6" fill="var(--leaf)"/>
+        <rect x="270" y="275" width="14" height="40" rx="6" fill="var(--leaf)"/>
+        <rect x="305" y="280" width="14" height="35" rx="6" fill="var(--leaf)"/>
+        <circle cx="200" cy="235" r="7" fill="var(--gold-soft)"/>
+        <circle cx="225" cy="248" r="7" fill="var(--gold-soft)"/>
+        <circle cx="255" cy="232" r="7" fill="var(--gold-soft)"/>
+        <circle cx="280" cy="250" r="7" fill="var(--gold-soft)"/>
+        <circle cx="380" cy="90" r="30" fill="var(--gold)" opacity="0.85"/>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROCESS ============ -->
+<section class="section section-tight">
+  <div class="section-head" data-reveal>
+    <div>
+      <span class="eyebrow">How it moves</span>
+      <h2>Udder to doorstep, in four steps.</h2>
+    </div>
+  </div>
+  <div class="process">
+    <div class="process-step" data-reveal>
+      <div class="process-num">01</div>
+      <h3>4:00 AM — Collected</h3>
+      <p>Farmers hand-milk and chill within minutes; our van does the rounds before sunrise.</p>
+    </div>
+    <div class="process-step" data-reveal>
+      <div class="process-num">02</div>
+      <h3>5:30 AM — Tested</h3>
+      <p>Every batch is checked for purity, fat content and freshness before it's accepted.</p>
+    </div>
+    <div class="process-step" data-reveal>
+      <div class="process-num">03</div>
+      <h3>6:00 AM — Prepared</h3>
+      <p>Milk is packed; dahi is set overnight; ghee is slow-churned in small batches.</p>
+    </div>
+    <div class="process-step" data-reveal>
+      <div class="process-num">04</div>
+      <h3>7:00 AM — Delivered</h3>
+      <p>Cold-chain vans complete every route before most kitchens have boiled their first cup.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TESTIMONIALS ============ -->
+<section class="section" id="testimonials">
+  <div class="section-head" data-reveal>
+    <div>
+      <span class="eyebrow">From our customers</span>
+      <h2>What the neighbourhood is saying.</h2>
+    </div>
+  </div>
+  <div class="testi-grid">
+    <div class="testi-card" data-reveal>
+      <div class="stars">★★★★★</div>
+      <p>"The dahi actually sets like my grandmother's — thick enough to hold a spoon upright. Been ordering for a year now."</p>
+      <div class="testi-person">
+        <div class="testi-avatar">R</div>
+        <div><strong>Ritika Sharma</strong><span>Gurugram</span></div>
+      </div>
+    </div>
+    <div class="testi-card" data-reveal>
+      <div class="stars">★★★★★</div>
+      <p>"Switched our whole household to the A2 ghee. You can genuinely smell the difference when it hits a hot tadka."</p>
+      <div class="testi-person">
+        <div class="testi-avatar">A</div>
+        <div><strong>Arjun Mehta</strong><span>Sector 45</span></div>
+      </div>
+    </div>
+    <div class="testi-card" data-reveal>
+      <div class="stars">★★★★★</div>
+      <p>"Delivery is like clockwork — 7 AM, every single day, rain or shine. Never once missed a morning."</p>
+      <div class="testi-person">
+        <div class="testi-avatar">S</div>
+        <div><strong>Simran Kaur</strong><span>DLF Phase 3</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTACT ============ -->
+<section class="section" id="contact">
+  <div class="section-head sub-head" data-reveal>
+    <div>
+      <span class="eyebrow">We'd love to hear from you</span>
+      <h2>Start your morning delivery.</h2>
+    </div>
+    <p class="lede">Tell us where you are and what you'd like on your doorstep. Our team calls back within a day.</p>
+  </div>
+  <div class="contact-grid">
+    <div class="contact-card" data-reveal>
+      <h3 style="margin-bottom:22px;">Send us a message</h3>
+      <form id="contactForm" novalidate>
+        <div class="field">
+          <label for="cf-name">Full name</label>
+          <input type="text" id="cf-name" name="name" placeholder="Your name">
+          <span class="field-error">Please enter your name.</span>
+        </div>
+        <div class="field">
+          <label for="cf-phone">Phone number</label>
+          <input type="tel" id="cf-phone" name="phone" placeholder="10-digit mobile number">
+          <span class="field-error">Enter a valid 10-digit phone number.</span>
+        </div>
+        <div class="field">
+          <label for="cf-email">Email address</label>
+          <input type="email" id="cf-email" name="email" placeholder="you@example.com">
+          <span class="field-error">Enter a valid email address.</span>
+        </div>
+        <div class="field">
+          <label for="cf-area">Delivery area</label>
+          <select id="cf-area" name="area">
+            <option>Sector 14, Gurugram</option>
+            <option>Sector 45, Gurugram</option>
+            <option>DLF Phase 1–5</option>
+            <option>South Delhi</option>
+            <option>Other — mention in message</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="cf-message">Message</label>
+          <textarea id="cf-message" name="message" placeholder="Tell us what you'd like delivered, and how often."></textarea>
+          <span class="field-error">Tell us a little more (min. 6 characters).</span>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center;">Send message</button>
+        <div class="form-msg" id="formMsg"></div>
+      </form>
+    </div>
+
+    <div data-reveal>
+      <h3>Other ways to reach us</h3>
+      <div class="info-list">
+        <div class="info-item">
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.12.9.34 1.79.65 2.65a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.43-1.27a2 2 0 0 1 2.11-.45c.86.31 1.75.53 2.65.65A2 2 0 0 1 22 16.92Z"/></svg></div>
+          <div><h4>Call or WhatsApp</h4><p><a href="tel:+919876543210">+91 98765 43210</a></p></div>
+        </div>
+        <div class="info-item">
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16v16H4V4Z"/><path d="m4 6 8 7 8-7"/></svg></div>
+          <div><h4>Email</h4><p><a href="mailto:hello@dudhdahi.in">hello@dudhdahi.in</a></p></div>
+        </div>
+        <div class="info-item">
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0 1 18 0Z"/><circle cx="12" cy="10" r="3"/></svg></div>
+          <div><h4>Distribution hub</h4><p>Plot 12, Sector 14 Dairy Market, Gurugram, Haryana 122001</p></div>
+        </div>
+        <div class="info-item">
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div>
+          <div><h4>Delivery window</h4><p>Every day, 6:00 AM – 7:30 AM</p></div>
+        </div>
+      </div>
+      <div class="map-frame">
+        <iframe src="https://www.google.com/maps?q=Sector%2014,%20Gurugram,%20Haryana&output=embed" loading="lazy" title="DudhDahi distribution hub location"></iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section class="section section-tight">
+  <div class="section-head" data-reveal>
+    <div>
+      <span class="eyebrow">Good to know</span>
+      <h2>Frequently asked questions.</h2>
+    </div>
+  </div>
+  <div data-reveal>
+    <div class="faq-item">
+      <div class="faq-q"><span>Do you deliver every day, including Sundays?</span><span class="plus">+</span></div>
+      <div class="faq-a"><div class="faq-a-inner">Yes — our vans run seven days a week, including Sundays and public holidays. The only pause is if you tell us to skip a day.</div></div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q"><span>Can I pause or change my subscription anytime?</span><span class="plus">+</span></div>
+      <div class="faq-a"><div class="faq-a-inner">Absolutely. Message us on WhatsApp before 9 PM the previous night to pause, add, or swap items for the next morning's delivery.</div></div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q"><span>What areas do you currently cover?</span><span class="plus">+</span></div>
+      <div class="faq-a"><div class="faq-a-inner">We currently deliver across Gurugram and parts of South Delhi. Mention your pin code in the form and we'll confirm coverage within a day.</div></div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q"><span>Is there a minimum subscription period?</span><span class="plus">+</span></div>
+      <div class="faq-a"><div class="faq-a-inner">No lock-in. You can start with a single trial delivery and move to a weekly or monthly plan whenever you're ready.</div></div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q"><span>How do I pay?</span><span class="plus">+</span></div>
+      <div class="faq-a"><div class="faq-a-inner">UPI, cards, and cash on delivery are all accepted. Monthly subscribers get a consolidated bill at the end of each cycle.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CTA ============ -->
+<section class="section">
+  <div class="cta-band" data-reveal>
+    <h2>Your first delivery is on us — try the morning basket.</h2>
+    <a href="#contact" class="btn btn-primary">Start my subscription</a>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="site-footer">
+  <svg class="footer-wave" viewBox="0 0 1440 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0 30c240 30 480-30 720 0s480 30 720 0v30H0Z" fill="var(--bg)"/></svg>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-brand">
+        <svg width="26" height="26" viewBox="0 0 40 40"><path d="M15 5h10v6l4 5v17a3 3 0 0 1-3 3H14a3 3 0 0 1-3-3V16l4-5V5Z" fill="var(--gold)"/></svg>
+        Dudh<span style="color:var(--gold-soft)">Dahi</span>
+      </div>
+      <p>Farm-fresh dairy, collected at dawn and delivered before breakfast — across Gurugram and Delhi NCR.</p>
+    </div>
+    <div>
+      <h4>Explore</h4>
+      <ul>
+        <li><a href="#products">All products</a></li>
+        <li><a href="#about">Our farm story</a></li>
+        <li><a href="#contact">Subscriptions</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Categories</h4>
+      <ul>
+        <li><a href="#products">Milk</a></li>
+        <li><a href="#products">Dahi &amp; Curd</a></li>
+        <li><a href="#products">Ghee</a></li>
+        <li><a href="#products">Chaas &amp; Cream</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Get in touch</h4>
+      <p>hello@dudhdahi.in<br>+91 98765 43210<br>Sector 14, Gurugram, Haryana</p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 DudhDahi. All rights reserved.</span>
+    <span>Made with care for small dairy farms.</span>
+  </div>
+</footer>
+
+<!-- ============ CART DRAWER ============ -->
+<div class="cart-overlay" id="cartOverlay"></div>
+<aside class="cart-drawer" id="cartDrawer" aria-label="Shopping cart">
+  <div class="cart-head">
+    <h3>Your basket</h3>
+    <button class="cart-close" id="cartClose" aria-label="Close cart">✕</button>
+  </div>
+  <div class="cart-items" id="cartItems"></div>
+  <div class="cart-foot">
+    <div class="cart-total"><span>Total</span><span id="cartTotal">₹0</span></div>
+    <a href="#contact" class="btn btn-primary">Checkout via WhatsApp</a>
+  </div>
+</aside>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ==========================================================================
+   DudhDahi — Shared behaviour
+   ========================================================================== */
+
+/* -------------------- Product catalogue -------------------- */
+const PRODUCTS = [
+  { id: "milk-toned", name: "Toned Milk", cat: "milk", price: 32, unit: "500 ml pouch", desc: "Pasteurised farm milk, delivered chilled every morning.", icon: "bottle", tag: "Daily" },
+  { id: "milk-full", name: "Full Cream Milk", cat: "milk", price: 38, unit: "500 ml pouch", desc: "Rich and creamy, straight from grass-fed herds.", icon: "bottle", tag: "Best seller" },
+  { id: "milk-a2", name: "A2 Gir Cow Milk", cat: "milk", price: 68, unit: "1 litre bottle", desc: "Single-breed A2 milk from our Gir cow herd.", icon: "bottle", tag: "Premium" },
+  { id: "dahi-classic", name: "Classic Dahi", cat: "dahi", price: 40, unit: "400 g tub", desc: "Set the traditional way — thick, tangy, probiotic-rich.", icon: "bowl", tag: "Daily" },
+  { id: "dahi-mishti", name: "Mishti Doi", cat: "dahi", price: 55, unit: "250 g tub", desc: "Slow-caramelised jaggery dahi, Bengal style.", icon: "bowl", tag: "New" },
+  { id: "dahi-greek", name: "Hung Curd", cat: "dahi", price: 85, unit: "200 g tub", desc: "Strained thick for dips, shrikhand and desserts.", icon: "bowl", tag: "Premium" },
+  { id: "ghee-desi", name: "Desi Cow Ghee", cat: "ghee", price: 620, unit: "500 ml jar", desc: "Bilona-churned, slow-cooked in small batches.", icon: "jar", tag: "Best seller" },
+  { id: "ghee-a2", name: "A2 Bilona Ghee", cat: "ghee", price: 780, unit: "500 ml jar", desc: "Traditional hand-churned ghee from A2 milk.", icon: "jar", tag: "Premium" },
+  { id: "chach-masala", name: "Masala Chaas", cat: "chach", price: 25, unit: "300 ml bottle", desc: "Spiced buttermilk with roasted cumin and curry leaf.", icon: "glass", tag: "Daily" },
+  { id: "chach-plain", name: "Plain Chaas", cat: "chach", price: 20, unit: "300 ml bottle", desc: "Light and cooling, churned fresh every day.", icon: "glass", tag: "Daily" },
+  { id: "cream-fresh", name: "Fresh Malai", cat: "cream", price: 60, unit: "200 g tub", desc: "Hand-collected malai, perfect for kulfi and sweets.", icon: "tub", tag: "New" },
+  { id: "cream-whip", name: "Whipping Cream", cat: "cream", price: 150, unit: "500 ml pack", desc: "35% fat cream that whips to soft, stable peaks.", icon: "tub", tag: "Bakers' pick" },
+];
+
+const CATEGORY_LABEL = { milk: "Milk", dahi: "Dahi & Curd", ghee: "Ghee", chach: "Chaas", cream: "Cream & Malai" };
+
+/* -------------------- Product SVG icons -------------------- */
+function productIcon(kind) {
+  const stroke = 'stroke="var(--leaf-deep)" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"';
+  switch (kind) {
+    case "bottle":
+      return `<svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><path ${stroke} d="M24 6h12v8l4 6v32a2 2 0 0 1-2 2H22a2 2 0 0 1-2-2V20l4-6V6Z"/><path ${stroke} d="M20 26h20"/><path d="M21 27h18v19a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 21 46V27Z" fill="var(--gold-soft)" opacity="0.55"/></svg>`;
+    case "bowl":
+      return `<svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><ellipse ${stroke} cx="30" cy="24" rx="18" ry="6"/><path ${stroke} d="M12 24c0 10 4 22 18 22s18-12 18-22"/><path d="M13.5 25c1 8 5 17 16.5 17s15.5-9 16.5-17c-3 2-9 3.5-16.5 3.5S16.5 27 13.5 25Z" fill="var(--gold-soft)" opacity="0.5"/></svg>`;
+    case "jar":
+      return `<svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><rect ${stroke} x="17" y="10" width="26" height="8" rx="2"/><path ${stroke} d="M20 18h20l3 6v24a4 4 0 0 1-4 4H21a4 4 0 0 1-4-4V24l3-6Z"/><path d="M17 30h26v14a4 4 0 0 1-4 4H21a4 4 0 0 1-4-4V30Z" fill="var(--clay)" opacity="0.35"/></svg>`;
+    case "glass":
+      return `<svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><path ${stroke} d="M20 14h20l-3 34a3 3 0 0 1-3 3H26a3 3 0 0 1-3-3L20 14Z"/><path ${stroke} d="M18 14h24"/><path d="M20.6 25h18.8l-1.9 21.5a2 2 0 0 1-2 1.8H24.5a2 2 0 0 1-2-1.8L20.6 25Z" fill="var(--gold-soft)" opacity="0.5"/></svg>`;
+    case "tub":
+      return `<svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><path ${stroke} d="M16 22h28l-3 24a3 3 0 0 1-3 3H22a3 3 0 0 1-3-3l-3-24Z"/><ellipse ${stroke} cx="30" cy="22" rx="14" ry="4.5"/><path d="M17.4 27h25.2l-2.3 18a2 2 0 0 1-2 1.8H21.7a2 2 0 0 1-2-1.8L17.4 27Z" fill="var(--clay)" opacity="0.3"/></svg>`;
+    default:
+      return "";
+  }
+}
+
+/* -------------------- Cart (localStorage) -------------------- */
+const Cart = {
+  KEY: "dudhdahi_cart",
+  read() {
+    try { return JSON.parse(localStorage.getItem(this.KEY)) || {}; }
+    catch (e) { return {}; }
+  },
+  write(data) { localStorage.setItem(this.KEY, JSON.stringify(data)); },
+  add(id, qty = 1) {
+    const data = this.read();
+    data[id] = (data[id] || 0) + qty;
+    this.write(data);
+    this.refreshUI();
+  },
+  setQty(id, qty) {
+    const data = this.read();
+    if (qty <= 0) delete data[id];
+    else data[id] = qty;
+    this.write(data);
+    this.refreshUI();
+  },
+  remove(id) {
+    const data = this.read();
+    delete data[id];
+    this.write(data);
+    this.refreshUI();
+  },
+  count() {
+    const data = this.read();
+    return Object.values(data).reduce((a, b) => a + b, 0);
+  },
+  total() {
+    const data = this.read();
+    let sum = 0;
+    for (const id in data) {
+      const p = PRODUCTS.find((x) => x.id === id);
+      if (p) sum += p.price * data[id];
+    }
+    return sum;
+  },
+  refreshUI() {
+    document.querySelectorAll(".cart-count").forEach((el) => (el.textContent = this.count()));
+    renderCartDrawer();
+  },
+};
+
+/* -------------------- Cart drawer rendering -------------------- */
+function renderCartDrawer() {
+  const itemsEl = document.getElementById("cartItems");
+  const totalEl = document.getElementById("cartTotal");
+  if (!itemsEl) return;
+  const data = Cart.read();
+  const ids = Object.keys(data);
+
+  if (ids.length === 0) {
+    itemsEl.innerHTML = `<div class="cart-empty">Your basket is empty.<br>Add some fresh dairy to get started.</div>`;
+  } else {
+    itemsEl.innerHTML = ids
+      .map((id) => {
+        const p = PRODUCTS.find((x) => x.id === id);
+        if (!p) return "";
+        const qty = data[id];
+        return `
+        <div class="cart-item" data-id="${p.id}">
+          <div class="cart-item-media">${productIcon(p.icon)}</div>
+          <div class="cart-item-info">
+            <strong>${p.name}</strong>
+            <span>₹${p.price} · ${p.unit}</span>
+            <div class="cart-item-qty">
+              <button class="qty-btn" data-action="dec" aria-label="Decrease quantity">−</button>
+              <span>${qty}</span>
+              <button class="qty-btn" data-action="inc" aria-label="Increase quantity">+</button>
+              <button class="cart-item-remove" data-action="remove">Remove</button>
+            </div>
+          </div>
+        </div>`;
+      })
+      .join("");
+  }
+  if (totalEl) totalEl.textContent = `₹${Cart.total()}`;
+}
+
+function bindCartDrawerEvents() {
+  const itemsEl = document.getElementById("cartItems");
+  if (!itemsEl) return;
+  itemsEl.addEventListener("click", (e) => {
+    const btn = e.target.closest("button");
+    if (!btn) return;
+    const row = e.target.closest(".cart-item");
+    const id = row.dataset.id;
+    const data = Cart.read();
+    if (btn.dataset.action === "inc") Cart.setQty(id, (data[id] || 0) + 1);
+    if (btn.dataset.action === "dec") Cart.setQty(id, (data[id] || 0) - 1);
+    if (btn.dataset.action === "remove") Cart.remove(id);
+  });
+}
+
+function openCart() {
+  document.getElementById("cartOverlay")?.classList.add("open");
+  document.getElementById("cartDrawer")?.classList.add("open");
+  document.body.style.overflow = "hidden";
+}
+function closeCart() {
+  document.getElementById("cartOverlay")?.classList.remove("open");
+  document.getElementById("cartDrawer")?.classList.remove("open");
+  document.body.style.overflow = "";
+}
+
+/* -------------------- Toast -------------------- */
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById("toast");
+  if (!t) return;
+  t.innerHTML = `🥛 ${msg}`;
+  t.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove("show"), 2200);
+}
+
+/* -------------------- Add-to-cart binding (event delegation) -------------------- */
+function bindAddToCart(root = document) {
+  root.addEventListener("click", (e) => {
+    const btn = e.target.closest(".add-btn");
+    if (!btn) return;
+    const id = btn.dataset.id;
+    const p = PRODUCTS.find((x) => x.id === id);
+    if (!p) return;
+    Cart.add(id, 1);
+    btn.classList.add("added");
+    btn.textContent = "✓";
+    showToast(`${p.name} added to your basket`);
+    setTimeout(() => {
+      btn.classList.remove("added");
+      btn.textContent = "+";
+    }, 900);
+  });
+}
+
+/* -------------------- Nav toggle -------------------- */
+function initNav() {
+  const nav = document.getElementById("mainNav");
+  const toggle = document.getElementById("navToggle");
+  if (!toggle) return;
+  toggle.addEventListener("click", () => nav.classList.toggle("open"));
+}
+
+/* -------------------- Scroll reveal -------------------- */
+function initReveal() {
+  const els = document.querySelectorAll("[data-reveal]");
+  if (!("IntersectionObserver" in window) || els.length === 0) {
+    els.forEach((el) => el.classList.add("is-visible"));
+    return;
+  }
+  const io = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          io.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.12 }
+  );
+  els.forEach((el) => io.observe(el));
+}
+
+/* -------------------- FAQ accordion -------------------- */
+function initFaq() {
+  document.querySelectorAll(".faq-item").forEach((item) => {
+    const q = item.querySelector(".faq-q");
+    const a = item.querySelector(".faq-a");
+    q.addEventListener("click", () => {
+      const isOpen = item.classList.contains("open");
+      document.querySelectorAll(".faq-item.open").forEach((other) => {
+        other.classList.remove("open");
+        other.querySelector(".faq-a").style.maxHeight = null;
+      });
+      if (!isOpen) {
+        item.classList.add("open");
+        a.style.maxHeight = a.scrollHeight + "px";
+      }
+    });
+  });
+}
+
+/* -------------------- Contact form validation -------------------- */
+function initContactForm() {
+  const form = document.getElementById("contactForm");
+  if (!form) return;
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    let valid = true;
+    const fields = [
+      { id: "cf-name", test: (v) => v.trim().length > 1, msg: "Please enter your name." },
+      { id: "cf-phone", test: (v) => /^[0-9]{10}$/.test(v.trim()), msg: "Enter a valid 10-digit phone number." },
+      { id: "cf-email", test: (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()), msg: "Enter a valid email address." },
+      { id: "cf-message", test: (v) => v.trim().length > 5, msg: "Tell us a little more (min. 6 characters)." },
+    ];
+    fields.forEach(({ id, test, msg }) => {
+      const input = document.getElementById(id);
+      const field = input.closest(".field");
+      const errorEl = field.querySelector(".field-error");
+      if (!test(input.value)) {
+        valid = false;
+        field.classList.add("has-error");
+        errorEl.textContent = msg;
+      } else {
+        field.classList.remove("has-error");
+      }
+    });
+    const msgBox = document.getElementById("formMsg");
+    if (valid) {
+      form.reset();
+      msgBox.textContent = "Thank you! Your message has been noted — our team will call you back within a day.";
+      msgBox.classList.add("show");
+      setTimeout(() => msgBox.classList.remove("show"), 5000);
+    } else {
+      msgBox.classList.remove("show");
+    }
+  });
+}
+
+/* -------------------- Render helpers used by pages -------------------- */
+function productCardHTML(p) {
+  return `
+  <article class="product-card" data-reveal data-cat="${p.cat}">
+    <div class="product-media">
+      <span class="product-tag ${p.tag === "Premium" ? "tag-gold" : ""}">${p.tag}</span>
+      ${productIcon(p.icon)}
+    </div>
+    <div class="product-name">${p.name}</div>
+    <div class="product-desc">${p.desc}</div>
+    <div class="product-foot">
+      <div class="product-price">₹${p.price} <span>/ ${p.unit}</span></div>
+      <button class="add-btn" data-id="${p.id}" aria-label="Add ${p.name} to cart">+</button>
+    </div>
+  </article>`;
+}
+
+function renderFeatured() {
+  const grid = document.getElementById("featuredGrid");
+  if (!grid) return;
+  const featured = PRODUCTS.filter((p) => ["milk-full", "dahi-classic", "ghee-desi", "chach-masala"].includes(p.id));
+  grid.innerHTML = featured.map(productCardHTML).join("");
+}
+
+function renderAllProducts(filter = "all") {
+  const grid = document.getElementById("productGrid");
+  if (!grid) return;
+  const list = filter === "all" ? PRODUCTS : PRODUCTS.filter((p) => p.cat === filter);
+  grid.innerHTML = list.map(productCardHTML).join("");
+  initReveal();
+}
+
+function initProductFilters() {
+  const pills = document.querySelectorAll(".pill[data-cat]");
+  if (pills.length === 0) return;
+  pills.forEach((pill) => {
+    pill.addEventListener("click", () => {
+      pills.forEach((p) => p.classList.remove("active"));
+      pill.classList.add("active");
+      renderAllProducts(pill.dataset.cat);
+    });
+  });
+}
+
+/* -------------------- Init on load -------------------- */
+document.addEventListener("DOMContentLoaded", () => {
+  initNav();
+  bindAddToCart(document);
+  bindCartDrawerEvents();
+  initReveal();
+  initFaq();
+  initContactForm();
+  initProductFilters();
+  renderFeatured();
+  renderAllProducts();
+  Cart.refreshUI();
+
+  document.getElementById("cartToggle")?.addEventListener("click", openCart);
+  document.getElementById("cartToggleMobile")?.addEventListener("click", openCart);
+  document.getElementById("cartClose")?.addEventListener("click", closeCart);
+  document.getElementById("cartOverlay")?.addEventListener("click", closeCart);
+});
+
+</script>
+</body>
+</html> *@

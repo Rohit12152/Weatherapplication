@@ -5,21 +5,23 @@ namespace Weatherapplication.Models
     {
         public int Id { get; set; }
 
-        public int QuotationId { get; set; }
+        public int? QuotationId { get; set; }
+        [NotMapped]
+        public int? categoryid { get; set; }
 
         public int ItemId { get; set; }
 
-        public decimal Qty { get; set; }
+        public double? Qty { get; set; }
 
-        public decimal Rate { get; set; }
+        public double? Rate { get; set; }
 
-        public decimal Amount { get; set; }
+        public double? Amount { get; set; }
 
-        public decimal GST { get; set; }
+        public double? GST { get; set; }
 
-        public decimal TaxAmount { get; set; }
+        public double? TaxAmount { get; set; }
 
-        public decimal TotalAmount { get; set; }
+        public double? TotalAmount { get; set; }
 
         [ForeignKey("QuotationId")]
         public virtual QuotationDetail QuotationDetail { get; set; }

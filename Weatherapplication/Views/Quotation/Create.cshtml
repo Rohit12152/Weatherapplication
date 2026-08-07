@@ -27,13 +27,13 @@
         </div>
 
         <div class="col-md-6">
-            <label>Student</label>
+            <label>Customer</label>
 
             <select asp-for="StudentId"
                     asp-items="ViewBag.StudentList"
                     class="form-control">
 
-                <option value="">Select Student</option>
+                <option value="">Select Customer</option>
 
             </select>
         </div>
@@ -42,19 +42,19 @@
 
     <hr />
 
-    <table class="table table-bordered" id="tblItems">
+    <table class="table table-bordered" id="tblItems" style="width:100%;">
 
         <thead class="table-dark">
 
             <tr>
-                <th>Item</th>
-                <th>Qty</th>
-                <th>Rate</th>
-                <th>Amount</th>
-                <th>GST %</th>
-                <th>Tax Amt</th>
-                <th>Total</th>
-                <th>Action</th>
+                <th style="width:20%;" >Item</th>
+                <th style="width:10%;">Qty</th>
+                <th style="width:10%;">Rate</th>
+                <th style="width:10%;">Amount</th>
+                <th style="width:10%;">GST %</th>
+                <th style="width:10%;">Tax Amt</th>
+                <th style="width:10%;">Total</th>
+                <th style="width:10%;">Action</th>
             </tr>
 
         </thead>
@@ -73,6 +73,24 @@
 
                         <td>
 
+                            <select name="quotationDetails[@index].categoryid"
+                                    class="form-control categoryDropdown">
+
+                                <option value="">Select Category</option>
+
+                                @foreach (var itm in ViewBag.CategoryList)
+                                {
+                                    if (itm.Value == item.categoryid.ToString())
+                                    {
+                                        <option value="@itm.Value" selected>@itm.Text</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@itm.Value">@itm.Text</option>
+                                    }
+                                }
+
+                            </select>
                             <select name="quotationDetails[@index].ItemId"
                                     class="form-control itemDropdown">
 
@@ -102,7 +120,7 @@
                         </td>
 
                         <td>
-                            <input type="number"
+                            <input type="number" step="any"
                                    name="quotationDetails[@index].Rate"
                                    class="form-control rate"
                                    value="@item.Rate" />
@@ -221,6 +239,17 @@
 
             <td>
 
+             <select name="quotationDetails[${rowIndex}].categoryid"
+                        class="form-control categoryDropdown">
+
+                    <option value="">Select Category</option>
+
+                    @foreach (var item in ViewBag.CategoryList)
+                    {
+                                <option value="@item.Value">@item.Text</option>
+                    }
+
+                </select>
                 <select name="quotationDetails[${rowIndex}].ItemId"
                         class="form-control itemDropdown">
 
@@ -369,5 +398,41 @@
             }
         });
     });
-      
+
+
+
+
+        $(document).on('change', '.categoryDropdown', function () {
+
+        var row = $(this).closest('tr');
+        var categoryId = $(this).val();
+
+        var itemDropdown = row.find('.itemDropdown');
+
+        itemDropdown.empty();
+        itemDropdown.append('<option value="">Select Item</option>');
+
+        if (categoryId == '')
+            return;
+
+        $.ajax({
+            url: '/Quotation/GetItemsByCategory',
+            type: 'GET',
+            data: { categoryId: categoryId },
+            success: function (data) {
+
+                $.each(data, function (i, item) {
+
+                    itemDropdown.append(
+                        '<option value="' + item.id + '">' +
+                        item.itemName +
+                        '</option>'
+                    );
+
+                });
+
+            }
+        });
+
+    });
 </script>

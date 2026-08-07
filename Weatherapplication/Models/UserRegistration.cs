@@ -19,6 +19,8 @@ namespace Weatherapplication.Models
 
         [Required]
         public string Password { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public bool IsRead { get; set; }
 
         [NotMapped]
         [Required]

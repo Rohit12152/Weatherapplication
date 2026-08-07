@@ -10,6 +10,18 @@
 
     <div class="row">
 
+        <div class="col-md-3 mb-3" style="display:none">
+            <label>Category</label>
+            <input asp-for="Category" class="form-control" />
+        </div>
+        <div class="col-md-3 mb-3">
+            <label>Category</label>
+            <select asp-for="categoryid"
+                    asp-items="ViewBag.CategoriesList"
+                    class="form-control">
+            </select>
+        </div>
+
         <div class="col-md-3 mb-3">
             <label>Item Code</label>
             <input asp-for="ItemCode" class="form-control" />
@@ -18,11 +30,6 @@
         <div class="col-md-3 mb-3">
             <label>Item Name</label>
             <input asp-for="ItemName" class="form-control" />
-        </div>
-
-        <div class="col-md-3 mb-3">
-            <label>Category</label>
-            <input asp-for="Category" class="form-control" />
         </div>
 
         <div class="col-md-3 mb-3">

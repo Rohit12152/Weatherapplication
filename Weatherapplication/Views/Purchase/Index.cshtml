@@ -1,0 +1,152 @@
+﻿@model IEnumerable<dynamic>
+
+@{
+    ViewData["Title"] = "Purchase List";
+}
+
+<div class="container-fluid">
+
+    <div class="card shadow">
+
+        <div class="card-header bg-primary text-white">
+
+            <div class="row">
+                <div class="col-md-6">
+                    <h4>Purchase List</h4>
+                </div>
+
+                <div class="col-md-6 text-end">
+                    <a asp-action="Create"
+                       class="btn btn-light">
+                        + New Purchase
+                    </a>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="card-body">
+
+            <table class="table table-bordered table-hover table-striped" id="itemTable">
+
+                <thead class="table-dark">
+                    <tr>
+                        <th>Purchase No</th>
+                        <th>Reference</th>
+                        <th>Customer</th>
+                        <th>Date</th>
+                        <th>Net Amount</th>
+                        <th width="180">Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+
+                            <td>@item.PoNo</td>
+
+                            <td>@item.Reference</td>
+
+                            <td>@item.CustomerName</td>
+
+                            <td>
+                                @(item.PoDate == null ? "" : Convert.ToDateTime(item.PoDate).ToString("dd/MM/yyyy"))
+                        </td>
+
+                            <td>
+                                ₹ @String.Format("{0:N2}", item.NetAmount)
+                            </td>
+
+                            <td>
+
+                              @*   <a asp-action="Details"
+                                   asp-route-id="@item.Id"
+                                   class="btn btn-info btn-sm">
+                                    View
+                                </a> *@
+
+                                <a asp-action="Create"
+                                   asp-route-id="@item.Id"
+                                   class="btn btn-warning btn-sm">
+                                    <i class="fa fa-pen"></i>
+                                </a>
+                                <a href="javascript:void(0);"
+                                   class="btn btn-danger btn-sm"
+                                   onclick="DeleteQuotation(@item.Id)">
+                                    <i class="fa fa-trash"></i>
+                                </a>
+
+                                <a asp-controller="PurchaseInvoice"
+                                   asp-action="Index"
+                                   asp-route-poid="@item.Id"
+                                   class="btn btn-primary">
+                                    Convert
+                                </a>
+                            </td>
+
+                        </tr>
+                                        }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+<script>
+    $(document).ready(function () {
+
+        if ($.fn.DataTable) {
+
+            $('#itemTable').DataTable({
+                responsive: true,
+                scrollX: true
+            });
+
+        }
+
+    });
+
+    function DeleteQuotation(id) {
+
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to recover this item!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, Delete it!'
+        }).then((result) => {
+
+            if (result.isConfirmed) {
+                window.location.href = '/Purchase/Delete/' + id;
+            }
+
+        });
+    }
+</script>
+@if (TempData["success"] != null)
+{
+    <script>
+
+        Swal.fire({
+
+            icon: 'success',
+
+            title: 'Success',
+
+            text: '@TempData["success"]',
+
+            timer: 2000,
+
+            showConfirmButton: false
+
+        });
+
+    </script>
+}

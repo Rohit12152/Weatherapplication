@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using OfficeOpenXml;
+using System.Linq;
 using Weatherapplication.Models;
 
 namespace Weatherapplication.Controllers
@@ -23,10 +25,16 @@ namespace Weatherapplication.Controllers
 
             return View(data);
         }
-
+        //public IActionResult CreateItem(int items)
+        //{
+        //    ItemMaster model = new ItemMaster();
+        //    ViewBag.CategoriesList = new SelectList(_context.Categories.Where(x => x.IsActive == true).ToList(), "Id", "CategoryName");
+        //    return View(model);
+        //}
         // CREATE / EDIT
         public IActionResult Create(int id = 0)
         {
+            ViewBag.CategoriesList = new SelectList(_context.Categories.Where(x => x.IsActive).ToList(),"CategoryId","CategoryName");
             if (id == 0)
             {
                 return View(new ItemMaster());
@@ -43,17 +51,44 @@ namespace Weatherapplication.Controllers
         [HttpPost]
         public IActionResult Create(ItemMaster obj)
         {
+            if (!ModelState.IsValid)
+            {
+                ViewBag.CategoriesList = new SelectList(_context.Categories.Where(x => x.IsActive).ToList(),"CategoryId","CategoryName");
+
+                return View(obj);
+            }
             if (obj.Id == 0)
             {
                 obj.CreatedDate = DateTime.Now;
-
+                obj.CurrentStock = obj.OpeningStock;
                 _context.ItemMaster.Add(obj);
 
                 TempData["success"] = "Item Saved Successfully";
             }
             else
             {
-                _context.ItemMaster.Update(obj);
+                var item = _context.ItemMaster.FirstOrDefault(x => x.Id == obj.Id);
+
+                if (item != null)
+                {
+                    item.ItemCode = obj.ItemCode;
+                    item.ItemName = obj.ItemName;
+                    item.Category = obj.Category;
+                    item.Unit = obj.Unit;
+                    item.PurchaseRate = obj.PurchaseRate;
+                    item.SaleRate = obj.SaleRate;
+                    item.GST = obj.GST;
+                    item.OpeningStock = obj.OpeningStock;
+                    item.MinStock = obj.MinStock;
+                    item.Brand = obj.Brand;
+                    item.HSNCode = obj.HSNCode;
+                    item.ItemDescription = obj.ItemDescription;
+                    item.categoryid = obj.categoryid;
+
+                    // item.CurrentStock ko update mat karo
+                }
+
+               // _context.ItemMaster.Update(obj);
 
                 TempData["success"] = "Item Updated Successfully";
             }
@@ -172,14 +207,31 @@ namespace Weatherapplication.Controllers
 
             var searchValue = Request.Form["search[value]"].FirstOrDefault();
 
-            IQueryable<ItemMaster> query = _context.ItemMaster.AsNoTracking();
+            var query =
+                from i in _context.ItemMaster.AsNoTracking()
+                join c in _context.Categories
+                    on i.categoryid equals c.CategoryId into cat
+                from c in cat.DefaultIfEmpty()
+                select new
+                {
+                    i.Id,
+                    i.ItemCode,
+                    i.ItemName,
+                    CategoryName = c != null ? c.CategoryName : "",
+                    i.Unit,
+                    i.PurchaseRate,
+                    i.SaleRate,
+                    i.GST,
+                    i.OpeningStock,
+                    i.Brand
+                };
 
             if (!string.IsNullOrEmpty(searchValue))
             {
                 query = query.Where(x =>
                     x.ItemCode.Contains(searchValue) ||
                     x.ItemName.Contains(searchValue) ||
-                    x.Category.Contains(searchValue) ||
+                    x.CategoryName.Contains(searchValue) ||
                     x.Brand.Contains(searchValue));
             }
 
@@ -189,19 +241,6 @@ namespace Weatherapplication.Controllers
                 .OrderByDescending(x => x.Id)
                 .Skip(start)
                 .Take(length)
-                .Select(x => new
-                {
-                    id = x.Id,
-                    itemCode = x.ItemCode,
-                    itemName = x.ItemName,
-                    category = x.Category,
-                    unit = x.Unit,
-                    purchaseRate = x.PurchaseRate,
-                    saleRate = x.SaleRate,
-                    gst = x.GST,
-                    openingStock = x.OpeningStock,
-                    brand = x.Brand
-                })
                 .ToList();
 
             return Json(new
@@ -212,5 +251,53 @@ namespace Weatherapplication.Controllers
                 data = data
             });
         }
+        //public IActionResult GetItems()
+        //{
+        //    var draw = Request.Form["draw"].FirstOrDefault();
+        //    var start = Convert.ToInt32(Request.Form["start"].FirstOrDefault());
+        //    var length = Convert.ToInt32(Request.Form["length"].FirstOrDefault());
+
+        //    var searchValue = Request.Form["search[value]"].FirstOrDefault();
+
+        //    IQueryable<ItemMaster> query = _context.ItemMaster.AsNoTracking();
+
+        //    if (!string.IsNullOrEmpty(searchValue))
+        //    {
+        //        query = query.Where(x =>
+        //            x.ItemCode.Contains(searchValue) ||
+        //            x.ItemName.Contains(searchValue) ||
+        //            x.Category.Contains(searchValue) ||
+        //            x.Brand.Contains(searchValue));
+        //    }
+
+        //    int recordsTotal = query.Count();
+
+        //    var data = query
+        //        .OrderByDescending(x => x.Id)
+        //        .Skip(start)
+        //        .Take(length)
+        //        .Select(x => new
+        //        {
+        //            id = x.Id,
+        //            itemCode = x.ItemCode,
+        //            itemName = x.ItemName,
+        //            category = x.Category,
+        //            unit = x.Unit,
+        //            purchaseRate = x.PurchaseRate,
+        //            saleRate = x.SaleRate,
+        //            gst = x.GST,
+        //            openingStock = x.OpeningStock,
+        //            brand = x.Brand
+        //        })
+        //        .ToList();
+
+        //    return Json(new
+        //    {
+        //        draw = draw,
+        //        recordsFiltered = recordsTotal,
+        //        recordsTotal = recordsTotal,
+        //        data = data
+        //    });
+        //}
     }
 }

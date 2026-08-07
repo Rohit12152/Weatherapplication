@@ -1,0 +1,381 @@
+﻿@{
+    ViewData["Title"] = "Hamare Products";
+}
+
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hamare Products - DudhDahi</title>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+    <style>
+        :root {
+            --primary-color: #0284c7;
+            --primary-hover: #0369a1;
+            --accent-color: #f59e0b;
+            --text-color: #1e293b;
+            --bg-color: #f8fafc;
+            --white: #ffffff;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 0;
+            color: var(--text-color);
+        }
+
+        /* Header Navigation */
+        header {
+            background-color: var(--white);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 1.5rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--primary-color);
+        }
+
+            .logo span {
+                color: var(--accent-color);
+            }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+            margin: 0;
+            padding: 0;
+            align-items: center;
+        }
+
+        .nav-link-item {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+            .nav-link-item:hover,
+            .nav-link-item.active {
+                color: var(--primary-color);
+            }
+
+        /* Container & Grid */
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            text-align: center;
+            color: var(--primary-color);
+            font-size: 2.2rem;
+            margin-bottom: 30px;
+            font-weight: 700;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 25px;
+        }
+
+        .product-card {
+            background: var(--white);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            text-align: center;
+            padding-bottom: 20px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+            .product-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            }
+
+            .product-card img {
+                width: 100%;
+                height: 200px;
+                object-fit: cover;
+            }
+
+            .product-card h3 {
+                margin: 15px 0 5px;
+                font-size: 1.2rem;
+                color: var(--text-color);
+            }
+
+            .product-card .price {
+                font-size: 1.25rem;
+                font-weight: bold;
+                color: var(--primary-color);
+                margin-bottom: 15px;
+            }
+
+        .btn-add-cart {
+            background-color: var(--primary-color);
+            color: var(--white);
+            border: none;
+            padding: 10px 22px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            margin: 0 auto;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+            .btn-add-cart:hover {
+                background-color: var(--primary-hover);
+                transform: scale(1.05);
+            }
+
+        /* Footer */
+        footer {
+            background-color: #0f172a;
+            color: var(--white);
+            text-align: center;
+            padding: 1.5rem;
+            margin-top: 50px;
+        }
+
+        /* Notification Toast */
+        #toast {
+            visibility: hidden;
+            min-width: 250px;
+            background-color: #16a34a;
+            color: #fff;
+            text-align: center;
+            border-radius: 25px;
+            padding: 12px 20px;
+            position: fixed;
+            z-index: 2000;
+            right: 30px;
+            bottom: 30px;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            opacity: 0;
+            transition: opacity 0.3s, bottom 0.3s;
+        }
+
+            #toast.show {
+                visibility: visible;
+                opacity: 1;
+                bottom: 40px;
+            }
+
+        /* Responsive Layout */
+        @@media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .nav-menu {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header>
+        <nav>
+            <div class="logo">Dudh<span>Dahi</span></div>
+            <ul class="nav-menu">
+                <li>
+                    <a class="nav-link-item" asp-controller="MilkProducts" asp-action="Index">
+                        <i class="fa-solid fa-house"></i> Home
+                    </a>
+                </li>
+                <li>
+                    <a class="nav-link-item active" asp-controller="MilkProducts" asp-action="products">
+                        <i class="fa-solid fa-box-open"></i> Products
+                    </a>
+                </li>
+                <li>
+                    <a class="nav-link-item" asp-controller="MilkProducts" asp-action="about">
+                        <i class="fa-solid fa-info-circle"></i> About Us
+                    </a>
+                </li>
+                <li>
+                    <a class="nav-link-item" asp-controller="MilkProducts" asp-action="contact">
+                        <i class="fa-solid fa-envelope"></i> Contact
+                    </a>
+                </li>
+                <!-- Cart Counter Icon -->
+                <li>
+                    <a class="nav-link-item" asp-controller="MilkProducts" asp-action="Cart" style="position: relative;">
+                        <i class="fa-solid fa-cart-shopping"></i> Cart
+                        <span id="cart-count" style="background: #ef4444; color: white; border-radius: 50%; padding: 2px 7px; font-size: 0.8rem; vertical-align: top;">0</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="container">
+        <h2 class="section-title">Hamare Sabhi Fresh Dairy Products</h2>
+        <div class="product-grid">
+
+            <!-- Product 1 -->
+            <div class="product-card">
+                <div>
+                    <img src="https://images.unsplash.com/photo-1550583724-b2692b85b150?auto=format&fit=crop&w=500&q=80" alt="Full Cream Dudh">
+                    <h3>Full Cream Dudh</h3>
+                    <p class="price">₹66 / Litre</p>
+                </div>
+                <button class="btn-add-cart" onclick="addToCart(101, 'Full Cream Dudh', 66, 'https://images.unsplash.com/photo-1550583724-b2692b85b150?auto=format&fit=crop&w=500&q=80')">
+                    <i class="fa-solid fa-cart-plus"></i> Add to Cart
+                </button>
+            </div>
+
+            <!-- Product 2 -->
+            <div class="product-card">
+                <div>
+                    <img src="https://images.unsplash.com/photo-1488477181946-6428a0291777?auto=format&fit=crop&w=500&q=80" alt="Khatte-Meethe Dahi">
+                    <h3>Khatte-Meethe Dahi</h3>
+                    <p class="price">₹50 / Kg</p>
+                </div>
+                <button class="btn-add-cart" onclick="addToCart(102, 'Khatte-Meethe Dahi', 50, 'https://images.unsplash.com/photo-1488477181946-6428a0291777?auto=format&fit=crop&w=500&q=80')">
+                    <i class="fa-solid fa-cart-plus"></i> Add to Cart
+                </button>
+            </div>
+
+            <!-- Product 3 -->
+            <div class="product-card">
+                <div>
+                    <img src="https://images.unsplash.com/photo-1631451095765-2c91616fc9e6?auto=format&fit=crop&w=500&q=80" alt="Desi A2 Cow Ghee">
+                    <h3>Desi A2 Cow Ghee</h3>
+                    <p class="price">₹850 / Kg</p>
+                </div>
+                <button class="btn-add-cart" onclick="addToCart(103, 'Desi A2 Cow Ghee', 850, 'https://images.unsplash.com/photo-1631451095765-2c91616fc9e6?auto=format&fit=crop&w=500&q=80')">
+                    <i class="fa-solid fa-cart-plus"></i> Add to Cart
+                </button>
+            </div>
+
+            <!-- Product 4 -->
+            <div class="product-card">
+                <div>
+                    <img src="https://images.unsplash.com/photo-1528751014936-863e6e7a319c?auto=format&fit=crop&w=500&q=80" alt="Masala Chaach">
+                    <h3>Masala Chaach</h3>
+                    <p class="price">₹20 / Bottle</p>
+                </div>
+                <button class="btn-add-cart" onclick="addToCart(104, 'Masala Chaach', 20, 'https://images.unsplash.com/photo-1528751014936-863e6e7a319c?auto=format&fit=crop&w=500&q=80')">
+                    <i class="fa-solid fa-cart-plus"></i> Add to Cart
+                </button>
+            </div>
+
+            <!-- Product 5 -->
+            <div class="product-card">
+                <div>
+                    <img src="https://images.unsplash.com/photo-1628088062854-d1870b4553da?auto=format&fit=crop&w=500&q=80" alt="Fresh Cream">
+                    <h3>Fresh Fresh Cream</h3>
+                    <p class="price">₹120 / 200g</p>
+                </div>
+                <button class="btn-add-cart" onclick="addToCart(105, 'Fresh Fresh Cream', 120, 'https://images.unsplash.com/photo-1628088062854-d1870b4553da?auto=format&fit=crop&w=500&q=80')">
+                    <i class="fa-solid fa-cart-plus"></i> Add to Cart
+                </button>
+            </div>
+
+            <!-- Product 6 -->
+            <div class="product-card">
+                <div>
+                    <img src="https://images.unsplash.com/photo-1559561853-08451507cbe7?auto=format&fit=crop&w=500&q=80" alt="Fresh Soft Paneer">
+                    <h3>Fresh Soft Paneer</h3>
+                    <p class="price">₹90 / 250g</p>
+                </div>
+                <button class="btn-add-cart" onclick="addToCart(106, 'Fresh Soft Paneer', 90, 'https://images.unsplash.com/photo-1559561853-08451507cbe7?auto=format&fit=crop&w=500&q=80')">
+                    <i class="fa-solid fa-cart-plus"></i> Add to Cart
+                </button>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Notification Alert Box -->
+    <div id="toast">Item cart me add ho gaya hai!</div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 DudhDahi. Sabhi Adhikar Surakshit Hain.</p>
+    </footer>
+
+    <!-- Shopping Cart Logic Scripts -->
+    <script>
+        // LocalStorage se cart fetch karna
+        function getCart() {
+            return JSON.parse(localStorage.getItem('dudhDahiCart')) || [];
+        }
+
+        // Cart Count Badge update karna
+        function updateCartBadge() {
+            let cart = getCart();
+            let totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+            let badge = document.getElementById('cart-count');
+            if (badge) {
+                badge.innerText = totalCount;
+            }
+        }
+
+        // Add to Cart Functionality
+        function addToCart(id, name, price, image) {
+            let cart = getCart();
+            let itemIndex = cart.findIndex(item => item.id === id);
+
+            if (itemIndex > -1) {
+                cart[itemIndex].quantity += 1;
+            } else {
+                cart.push({ id: id, name: name, price: price, image: image, quantity: 1 });
+            }
+
+            localStorage.setItem('dudhDahiCart', JSON.stringify(cart));
+            updateCartBadge();
+            showToast(name + " cart me add ho gaya!");
+        }
+
+        // Toast Notification Show karne ka function
+        function showToast(message) {
+            let toast = document.getElementById("toast");
+            toast.innerText = message;
+            toast.className = "show";
+            setTimeout(function () {
+                toast.className = toast.className.replace("show", "");
+            }, 2500);
+        }
+
+        // Page load hone par Badge update hoga
+        document.addEventListener("DOMContentLoaded", updateCartBadge);
+    </script>
+</body>
+</html>

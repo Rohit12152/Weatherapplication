@@ -1,0 +1,86 @@
+﻿@model Category
+
+<div class="container mt-4">
+
+    <div class="card shadow">
+
+        <div class="card-header">
+
+            <h4>
+                @(Model.CategoryId == 0
+                                ? "Add Category"
+                                : "Edit Category")
+            </h4>
+
+        </div>
+
+        <div class="card-body">
+
+            <form asp-action="Create">
+
+                <input type="hidden"
+                       asp-for="CategoryId" />
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Category Name
+                    </label>
+
+                    <input asp-for="CategoryName"
+                           class="form-control" />
+
+                    <span asp-validation-for="CategoryName"
+                          class="text-danger"></span>
+
+                </div>
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Description
+                    </label>
+
+                    <textarea asp-for="Description"
+                              class="form-control"></textarea>
+
+                </div>
+
+                <div class="form-check mb-3">
+
+                    <input asp-for="IsActive"
+                           class="form-check-input" />
+
+                    <label class="form-check-label">
+                        Active
+                    </label>
+
+                </div>
+
+                <button type="submit"
+                        class="btn btn-success">
+
+                    @(Model.CategoryId == 0
+                                        ? "Save"
+                                        : "Update")
+
+                </button>
+
+                <a asp-action="Index"
+                   class="btn btn-secondary">
+                    Back
+                </a>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

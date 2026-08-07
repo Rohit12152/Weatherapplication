@@ -1,0 +1,636 @@
+﻿@{
+    ViewData["Title"] = "Purchase Invoice";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+<style>
+    /* ===== BASE ===== */
+    [ng-cloak], .ng-cloak {
+        display: none !important;
+    }
+
+    .pi-wrap {
+        padding: 1.5rem 0;
+        font-size: 14px;
+    }
+
+    /* ===== CARD ===== */
+    .pi-card {
+        background: #ffffff;
+        border: 1px solid #e9ecef;
+        border-radius: 12px;
+        overflow: hidden;
+        margin-bottom: 1.25rem;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+
+    .pi-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 0.85rem 1.25rem;
+        background: #f8f9fa;
+        border-bottom: 1px solid #e9ecef;
+    }
+
+        .pi-header i {
+            font-size: 16px;
+            color: #6c757d;
+        }
+
+        .pi-header span {
+            font-size: 12px;
+            font-weight: 600;
+            color: #6c757d;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+    .pi-badge {
+        margin-left: auto;
+        font-size: 11px;
+        padding: 3px 10px;
+        border-radius: 20px;
+        background: #e8f0fe;
+        color: #1a56db;
+        font-weight: 500;
+    }
+
+    .pi-body {
+        padding: 1.25rem 1.5rem;
+    }
+
+    /* ===== FORM FIELDS ===== */
+    .pi-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+        gap: 1.25rem;
+    }
+
+    .pi-field {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .pi-label {
+        font-size: 11px;
+        font-weight: 600;
+        color: #6c757d;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+    }
+
+    .pi-input {
+        background: #f8f9fa;
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        padding: 9px 12px;
+        font-size: 14px;
+        color: #212529;
+        font-family: inherit;
+        width: 100%;
+        box-sizing: border-box;
+        outline: none;
+        transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+        .pi-input:focus {
+            border-color: #0d6efd;
+            background: #fff;
+            box-shadow: 0 0 0 3px rgba(13,110,253,0.1);
+        }
+
+    .pi-select {
+        appearance: none;
+        -webkit-appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236c757d' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 12px center;
+        padding-right: 32px;
+        cursor: pointer;
+    }
+
+    /* ===== ITEM TABLE ===== */
+    .pi-table-wrap {
+        overflow-x: auto;
+    }
+
+    table.pi-table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 720px;
+    }
+
+    .pi-table thead tr {
+        background: #f8f9fa;
+    }
+
+    .pi-table th {
+        font-size: 11px;
+        font-weight: 600;
+        color: #6c757d;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        padding: 10px 12px;
+        border-bottom: 1px solid #e9ecef;
+        text-align: left;
+        white-space: nowrap;
+    }
+
+        .pi-table th.r {
+            text-align: right;
+        }
+
+    .pi-table td {
+        padding: 8px 8px;
+        border-bottom: 1px solid #f1f3f5;
+        vertical-align: middle;
+    }
+
+    .pi-table tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+    .pi-table tbody tr:hover td {
+        background: #f8f9fa;
+    }
+
+    /* Table inline inputs */
+    .t-input {
+        background: transparent;
+        border: none;
+        border-bottom: 1.5px solid #dee2e6;
+        border-radius: 0;
+        padding: 5px 4px;
+        font-size: 13px;
+        color: #212529;
+        font-family: inherit;
+        width: 100%;
+        box-sizing: border-box;
+        outline: none;
+        text-align: right;
+        transition: border-color 0.2s;
+    }
+
+        .t-input:focus {
+            border-bottom-color: #0d6efd;
+        }
+
+        .t-input[readonly] {
+            border-bottom-style: dashed;
+            color: #6c757d;
+            cursor: not-allowed;
+        }
+
+        .t-input.bold {
+            font-weight: 600;
+            color: #0d6efd;
+        }
+
+    .t-select {
+        background: transparent;
+        border: none;
+        border-bottom: 1.5px solid #dee2e6;
+        padding: 5px 24px 5px 0;
+        font-size: 13px;
+        color: #212529;
+        font-family: inherit;
+        width: 100%;
+        min-width: 160px;
+        appearance: none;
+        -webkit-appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236c757d' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 4px center;
+        cursor: pointer;
+        outline: none;
+        box-sizing: border-box;
+        transition: border-color 0.2s;
+    }
+
+        .t-select:focus {
+            border-bottom-color: #0d6efd;
+        }
+
+    /* Action buttons in table */
+    .act-btn {
+        width: 28px;
+        height: 28px;
+        border-radius: 6px;
+        border: 1px solid #dee2e6;
+        background: transparent;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px;
+        color: #6c757d;
+        transition: background 0.15s;
+    }
+
+        .act-btn:hover {
+            background: #f1f3f5;
+        }
+
+    .add-btn {
+        color: #198754;
+        border-color: #a3cfbb;
+    }
+
+        .add-btn:hover {
+            background: #d1e7dd;
+        }
+
+    .del-btn {
+        color: #dc3545;
+        border-color: #f1aeb5;
+    }
+
+        .del-btn:hover {
+            background: #f8d7da;
+        }
+
+    /* Add row button at bottom of table card */
+    .add-row-bar {
+        padding: 0.75rem 1.25rem;
+        border-top: 1px solid #e9ecef;
+    }
+
+    .btn-add-row {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 12px;
+        font-weight: 500;
+        color: #198754;
+        background: transparent;
+        border: 1px solid #a3cfbb;
+        border-radius: 6px;
+        padding: 5px 14px;
+        cursor: pointer;
+        font-family: inherit;
+        transition: background 0.15s;
+    }
+
+        .btn-add-row:hover {
+            background: #d1e7dd;
+        }
+
+    /* ===== TOTALS ===== */
+    .pi-totals {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+    }
+
+
+    .pi-total-card {
+        background: #f8f9fa;
+        border-radius: 8px;
+        padding: 1rem 1.25rem;
+        border: 1px solid #e9ecef;
+    }
+
+    .pi-total-label {
+        font-size: 11px;
+        font-weight: 600;
+        color: #6c757d;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 6px;
+    }
+
+    .pi-total-val {
+        font-size: 20px;
+        font-weight: 600;
+        color: #212529;
+    }
+
+        .pi-total-val.net {
+            color: #0d6efd;
+        }
+
+    /* ===== ACTIONS ===== */
+    .pi-actions {
+        display: flex;
+        gap: 10px;
+        justify-content: flex-end;
+        padding: 1rem 1.5rem;
+        border-top: 1px solid #e9ecef;
+    }
+
+    .btn-reset {
+        background: transparent;
+        color: #6c757d;
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        padding: 8px 20px;
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+        font-family: inherit;
+        transition: background 0.15s;
+    }
+
+        .btn-reset:hover {
+            background: #f8f9fa;
+        }
+
+    .btn-save {
+        background: #0d6efd;
+        color: #fff;
+        border: 1px solid #0d6efd;
+        border-radius: 8px;
+        padding: 8px 24px;
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+        font-family: inherit;
+        transition: background 0.15s;
+    }
+
+        .btn-save:hover {
+            background: #0b5ed7;
+        }
+</style>
+
+<div class="container-fluid py-4 pi-wrap" ng-app="ERPApp" ng-controller="PurchaseInvoiceController" ng-cloak>
+    <div class="card shadow custom-card custom-form mb-4" ng-if="ShowForm">
+        <!-- ===== Header Card ===== -->
+        <div class="pi-card">
+            <div class="pi-header">
+                <i class="fa-solid fa-file-invoice-dollar"></i>
+                <span>Purchase Invoice</span>
+                <div class="pi-badge">New</div>
+            </div>
+            <div class="pi-body">
+                <div class="pi-grid">
+
+                    <div class="pi-field">
+                        <label class="pi-label" for="pino">Invoice No.</label>
+                        <input type="text" class="pi-input" id="pino" placeholder=""
+                               ng-model="PurchaseInvoice.purchaseInvoiceNo" />
+                    </div>
+
+                    <div class="pi-field">
+                        <label class="pi-label" for="ref">Reference</label>
+                        <input type="text" class="pi-input" id="ref" placeholder="PO / GRN reference"
+                               ng-model="PurchaseInvoice.reference" />
+                    </div>
+
+                    <div class="pi-field">
+                        <label class="pi-label" for="custid">Customer</label>
+                        <select class="pi-input pi-select" id="custid"
+                                ng-model="PurchaseInvoice.customerId"
+                                ng-options="c.id as c.customerName for c in CustomerList">
+                            <option value="">Select customer</option>
+                        </select>
+                    </div>
+
+                    <div class="pi-field">
+                        <label class="pi-label" for="piDate">Invoice Date</label>
+                        <input type="date" class="pi-input" id="piDate"
+                               ng-model="PurchaseInvoice.purchaseInvoiceDate" />
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+
+        <!-- ===== Item Details Card ===== -->
+        <div class="pi-card">
+            <div class="pi-header">
+                <i class="fa-solid fa-list"></i>
+                <span>Item Details</span>
+            </div>
+
+            <div class="pi-table-wrap">
+                <table class="pi-table" >
+                    <thead>
+                        <tr>
+                            <th style="min-width:180px;">Item</th>
+                            <th class="r" style="width:80px;">Qty</th>
+                            <th class="r" style="width:100px;">Rate</th>
+                            <th class="r" style="width:110px;">Amount</th>
+                            <th class="r" style="width:80px;">GST %</th>
+                            <th class="r" style="width:100px;">Tax</th>
+                            <th class="r" style="width:110px;">Total</th>
+                            <th style="width:72px; text-align:center;">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="item in PurchaseInvoice.purchaseInvoiceItem">
+
+                            <td>
+                                <select class="t-select"
+                                        ng-model="item.itemId"
+                                        ng-options="i.id as i.itemName for i in ItemList">
+                                    <option value="">Select item</option>
+                                </select>
+                            </td>
+
+                            <td>
+                                <input type="number" class="t-input"
+                                       ng-model="item.qty"
+                                       ng-change="Calculate(item)"
+                                       placeholder="0" />
+                            </td>
+
+                            <td>
+                                <input type="number" class="t-input"
+                                       ng-model="item.rate"
+                                       ng-change="Calculate(item)"
+                                       placeholder="0.00" />
+                            </td>
+
+                            <td>
+                                <input type="number" class="t-input" readonly
+                                       ng-model="item.amount"
+                                       placeholder="0.00" />
+                            </td>
+
+                            <td>
+                                <input type="number" class="t-input"
+                                       ng-model="item.taxPercent"
+                                       ng-change="Calculate(item)"
+                                       placeholder="0" />
+                            </td>
+
+                            <td>
+                                <input type="number" class="t-input" readonly
+                                       ng-model="item.taxAmount"
+                                       placeholder="0.00" />
+                            </td>
+
+                            <td>
+                                <input type="number" class="t-input bold" readonly
+                                       ng-model="item.totalAmount"
+                                       placeholder="0.00" />
+                            </td>
+
+                            <td style="text-align:center;">
+                                <div style="display:flex;gap:4px;justify-content:center;align-items:center;">
+                                    <button class="act-btn add-btn" type="button"
+                                            ng-if="$last"
+                                            ng-click="AddRow()"
+                                            title="Add row">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                    <button class="act-btn del-btn" type="button"
+                                            ng-click="RemoveRow($index)"
+                                            title="Delete row">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="add-row-bar">
+                <button class="btn-add-row" type="button" ng-click="AddRow()">
+                    <i class="fa fa-plus"></i> Add row
+                </button>
+            </div>
+        </div>
+
+        <!-- ===== Totals + Actions Card ===== -->
+        <div class="pi-card">
+            <div class="pi-body">
+                <div class="pi-totals">
+
+                    <div class="pi-total-card">
+                        <div class="pi-total-label">Total Amount</div>
+                        <div class="pi-total-val">
+                            ₹ {{ PurchaseInvoice.totalAmount | number:2 }}
+                        </div>
+                    </div>
+
+                    <div class="pi-total-card">
+                        <div class="pi-total-label">Total Tax</div>
+                        <div class="pi-total-val">
+                            ₹ {{ PurchaseInvoice.totalTax | number:2 }}
+                        </div>
+                    </div>
+
+                    <div class="pi-total-card">
+                        <div class="pi-total-label">Net Payable</div>
+                        <div class="pi-total-val net">
+                            ₹ {{ PurchaseInvoice.netAmount | number:2 }}
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+
+        <div class="pi-card">
+            <div class="pi-actions">
+                <button class="btn-reset" type="button" ng-click="Reset()">Reset</button>
+                <button class="btn btn-outline-secondary" ng-click="Cancel()">
+                    <i class="fa-solid fa-xmark"></i>Cancel
+                </button>
+                <button class="btn-save" type="button" ng-click="Save()">
+                    <i class="fa-solid fa-floppy-disk me-2"></i>{{ PurchaseInvoice.id ? 'Update' : 'Save' }}
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card shadow custom-card" ng-if="ShowGrid">
+        <div class="card-body p-4">
+            <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3 mb-4">
+                <h5 class="mb-0 text-secondary fw-bold text-uppercase tracking-wider">
+                    <i class="fa-solid fa-list me-2 text-primary"></i>Purchase Invoice List
+                </h5>
+                <button class="btn btn-primary px-3 py-2 d-flex align-items-center justify-content-center" ng-click="NewPI()">
+                    <i class="fa fa-plus me-2"></i> New Purchase Invoice
+                </button>
+            </div>
+
+            <!-- FILTER BAR -->
+            <!-- Added ng-cloak and swapped ng-if to ng-show -->
+            <div class="card shadow custom-card ng-cloak" ng-show="ShowGrid && IsGridLoaded">
+                <div class="card-body p-4">
+                    <!-- Filter Bar -->
+                    <div class="row g-3 mb-4 align-items-end bg-light p-3 rounded-3 border">
+                        <div class="col-md-3">
+                            <label class="form-label fw-bold text-secondary small">From Date</label>
+                            <input type="date" class="form-control form-control-sm" ng-model="Filter.fromDate" ng-change="ApplyFilter()">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label fw-bold text-secondary small">To Date</label>
+                            <input type="date" class="form-control form-control-sm" ng-model="Filter.toDate" ng-change="ApplyFilter()">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label fw-bold text-secondary small">Customer Name</label>
+                            <select class="form-select form-select-sm"
+                                    ng-model="Filter.customerName"
+                                    ng-change="ApplyFilter()"
+                                    ng-options="c.customerName as c.customerName for c in CustomerList">
+                                <option value="">All Customers</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <button class="btn btn-sm btn-secondary w-100" ng-click="ResetFilter()">Reset</button>
+                        </div>
+                    </div>
+
+                    <!-- Table -->
+                    <div class="table-responsive w-100">
+                        <table class="table table-hover align-middle custom-table w-100" id="itemTable">
+                            <thead class="table-light border-bottom border-2 text-secondary">
+                                <tr>
+                                    <th>Sr No.</th>
+                                    <th>Invoice No.</th>
+                                    <th>Invoice Date</th>
+                                    <th>Customer Name</th>
+                                    <th>Total Amount</th>
+                                    <th>Total Tax</th>
+                                    <th>Net Payable</th>
+                                    <th class="text-center">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="p in PurchaseInvoiceList">
+                                    <td class="fw-bold text-secondary">{{$index + 1}}</td>
+                                    <td><span class="badge bg-light text-dark border">{{p.purchaseInvoiceNo}}</span></td>
+                                    <td class="fw-semibold">{{p.purchaseInvoiceDate | date:'dd-MM-yyyy'}}</td>
+                                    <td>{{p.customerName}}</td>
+                                    <td class="text-end">₹ {{p.totalAmount | number:2}}</td>
+                                    <td class="text-end">₹ {{p.totalTax | number:2}}</td>
+                                    <td class="text-end fw-bold">₹ {{p.netAmount | number:2}}</td>
+                                    <td>
+                                        <div class="d-flex gap-2 justify-content-center">
+                                            <button class="btn btn-outline-primary btn-sm rounded-3 shadow-sm px-2" ng-click="Edit(p.id)" title="Edit">
+                                                <i class="fa-solid fa-pen-to-square"></i>
+                                            </button>
+                                            <button class="btn btn-outline-danger btn-sm rounded-3 shadow-sm px-2" ng-click="Delete(p.id)" title="Delete">
+                                                <i class="fa-solid fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var poid = '@ViewBag.POId';
+</script>
+@section Scripts {
+    <script src="~/js/app.js"></script>
+    <script src="~/js/Services/PurchaseInvoiceService.js"></script>
+    <script src="~/js/Controllers/PurchaseInvoiceController.js"></script>
+}

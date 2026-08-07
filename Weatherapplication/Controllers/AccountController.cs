@@ -66,9 +66,16 @@ namespace Weatherapplication.Controllers
                 TempData["Success"] =
                     "Registration completed successfully.";
 
+//                var notifications = _context.Users
+//.OrderByDescending(x => x.CreatedDate)
+//.Take(10)
+//.ToList();
+
+//                ViewBag.Notifications = notifications;
+//                ViewBag.NotificationCount = notifications.Count();
                 return RedirectToAction("Signup");
             }
-
+           
             return View(model);
         }
     }
